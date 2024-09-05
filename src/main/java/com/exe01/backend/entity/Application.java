@@ -1,56 +1,31 @@
 package com.exe01.backend.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "application_tbl")
-public class Application extends BaseEntity {
-
-    @Column(name = "full_name")
-    private String fullName;
-
-    @Column(name = "user_address")
-    private String userAddress;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "facebook_url")
-    private String facebookUrl;
-
-    @Column(name = "zalo_account")
-    private String zaloAccount;
-
-    @Column(name = "reason_apply")
-    private String reasonApply;
-
-    @Column(name = "introduce")
-    private String introduce;
-
-    @Column(name = "cv_file")
-    private String cvFile;
+@Table(name = "application")
+public class Application extends BaseEntity{
     @ManyToOne
-    @JoinColumn(name = "student_id",referencedColumnName = "id")
-    private Student student;
+    @JoinColumn(name = "internship_id", referencedColumnName = "id")
+    private InternshipProgram internshipProgram;
 
+    @ManyToOne
+    @JoinColumn(name = "unistudent_id", referencedColumnName = "id")
+    private UniStudent uniStudent;
 
+    private String cv;
+    private String status;  // "submitted", "reviewed", "interview", "rejected", "accepted"
 }
