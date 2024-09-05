@@ -1,6 +1,13 @@
 package com.exe01.backend.constant;
 
 public class ConstError {
+    public static class User {
+        public static final String USER_NOT_FOUND = "User not found";
+    }
+
+    public static class Business {
+        public static final String BUSINESS_NOT_FOUND = "Business not found";
+    }
 
     public static class Campaign {
         public static final String CAMPAIGN_NOT_FOUND = "Campaign not found";
