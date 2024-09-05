@@ -1,11 +1,8 @@
 package com.exe01.backend.converter;
 
 import com.exe01.backend.dto.request.BusinessRequest;
-import com.exe01.backend.dto.request.UserRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
-import com.exe01.backend.dto.response.user.UserResponse;
 import com.exe01.backend.entity.Business;
-import com.exe01.backend.entity.User;
 
 public class BusinessConverter {
     public static BusinessResponse fromEntityToBusinessResponse(Business business) {
