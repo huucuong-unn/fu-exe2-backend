@@ -2,6 +2,7 @@ package com.exe01.backend.converter;
 
 import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
+import com.exe01.backend.dto.response.business.FeatureCompanyResponse;
 import com.exe01.backend.entity.Business;
 
 public class BusinessConverter {
@@ -29,5 +30,11 @@ public class BusinessConverter {
         business.setStatus(request.getStatus());
 
         return business;
+    }
+
+    public static FeatureCompanyResponse fromEntityToFeatureCompanyResponse(Business business) {
+        FeatureCompanyResponse featureCompanyResponse = new FeatureCompanyResponse();
+        featureCompanyResponse.setName(business.getName());
+        return featureCompanyResponse;
     }
 }

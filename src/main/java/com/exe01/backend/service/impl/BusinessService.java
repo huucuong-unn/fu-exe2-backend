@@ -5,18 +5,23 @@ import com.exe01.backend.constant.ConstStatus;
 import com.exe01.backend.converter.BusinessConverter;
 import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
+import com.exe01.backend.dto.response.business.FeatureCompanyResponse;
 import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.User;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
+import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.repository.BusinessRepository;
 import com.exe01.backend.service.IBusinessService;
 import com.exe01.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,6 +61,25 @@ public class BusinessService implements IBusinessService {
             }
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
+    }
+
+    @Override
+    public PagingModel getFeatureCompanies(Integer page, Integer limit) throws BaseException {
+        logger.info("Get all feature company with paging");
+        PagingModel result = new PagingModel();
+        result.setPage(page);
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        List<Business> featureCompanies = businessRepository.findAllByStatusOrderByCreatedDate(ConstStatus.ACTIVE_STATUS, pageable);
+        List<FeatureCompanyResponse> featureCompanyResponses = featureCompanies.stream().map(BusinessConverter::fromEntityToFeatureCompanyResponse).toList();
+        result.setListResult(featureCompanyResponses);
+        result.setTotalPage(((int) Math.ceil((double) (totalItem()) / limit)));
+        result.setLimit(limit);
+        result.setTotalCount((int) businessRepository.count());
+        return result;
+    }
+
+    public int totalItem() {
+        return (int) businessRepository.count();
     }
 
     @Override

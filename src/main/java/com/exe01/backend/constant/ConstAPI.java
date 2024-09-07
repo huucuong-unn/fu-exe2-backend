@@ -7,6 +7,7 @@ public class ConstAPI {
     }
 
     public static class BusinessAPI {
+        public static final String GET_FEATURE_COMPANY = "api/v1/business/feature-company";
         public static final String CREATE_BUSINESS = "api/v1/business/create";
     }
 
