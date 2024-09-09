@@ -4,6 +4,7 @@ import com.exe01.backend.dto.response.coze.CozeCreateChatResponse;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
 import com.exe01.backend.dto.response.coze.CozeMessageListResponse;
 import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
+import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.openfeign.CozeClient;
 import com.exe01.backend.service.ICozeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,26 @@ public class CozeService implements ICozeService {
     }
 
     @Override
-    public CozeFeedbackResponse uploadFile(MultipartFile file) {
+    public CozeFeedbackResponse uploadFile(MultipartFile file) throws BaseException{
+        try {
         // Define the authorization token
         // Upload the file
         CozeUploadFileResponse fileResponse =  cozeClient.uploadFile(authorizationToken,file);
 //        // Create chat
         CozeCreateChatResponse chatResponse =  createChat(fileResponse.getData().getId());
         //get message list
-        CozeMessageListResponse messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
-        // Parse the feedback data
-        return parseFeedbackData(messageListResponse.getData().get(0).getContent());
+        List<CozeMessageListResponse.ChatData> messages;
+        do {
+            CozeMessageListResponse messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+            messages = messageListResponse.getData();
+            if (messages.size() < 2) {
+                Thread.sleep(1000); // Sleep for 1 second before retrying
+            }
+        } while (messages.size() < 2);        // Parse the feedback data
+        return parseFeedbackData(messages.get(0).getContent());
+        } catch (Exception e) {
+            throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");
+        }
     }
 
     public CozeFeedbackResponse parseFeedbackData(String rawData) {
