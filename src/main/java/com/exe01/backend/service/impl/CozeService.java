@@ -50,6 +50,10 @@ public class CozeService implements ICozeService {
             messages = messageListResponse.getData();
             if (messages.size() < 2) {
                 Thread.sleep(1000); // Sleep for 1 second before retrying
+            }else{
+                Thread.sleep(5000); // Sleep for 10 second before retrying
+                messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+                messages = messageListResponse.getData();
             }
         } while (messages.size() < 2);        // Parse the feedback data
         return parseFeedbackData(messages.get(0).getContent());
