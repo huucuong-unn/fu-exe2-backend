@@ -5,7 +5,6 @@ import com.exe01.backend.converter.ApplicationConverter;
 import com.exe01.backend.dto.request.ApplicationRequest;
 import com.exe01.backend.dto.response.application.ApplicationResponse;
 import com.exe01.backend.entity.Application;
-import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.InternshipProgram;
 import com.exe01.backend.entity.UniStudent;
 import com.exe01.backend.enums.ErrorCode;

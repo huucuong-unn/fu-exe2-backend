@@ -1,9 +1,7 @@
 package com.exe01.backend.converter;
 
 import com.exe01.backend.dto.request.SubscriptionRequest;
-import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.subscription.SubscriptionResponse;
-import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.Subscription;
 
 public class SubscriptionConverter {

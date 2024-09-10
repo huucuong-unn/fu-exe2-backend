@@ -2,8 +2,6 @@ package com.exe01.backend.converter;
 
 import com.exe01.backend.dto.request.InternshipProgramRequest;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
-import com.exe01.backend.dto.response.internshipProgram.Top3Response;
-import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.InternshipProgram;
 
 public class InternshipProgramConverter {

@@ -1,13 +1,10 @@
 package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
-import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.request.InternshipProgramRequest;
-import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
 import com.exe01.backend.dto.response.internshipProgram.Top3Response;
 import com.exe01.backend.exception.BaseException;
-import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.service.IInternshipProgramService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;

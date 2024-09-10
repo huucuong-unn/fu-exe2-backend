@@ -2,9 +2,7 @@ package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
 import com.exe01.backend.dto.request.ApplicationRequest;
-import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.response.application.ApplicationResponse;
-import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.service.IApplicationService;
 import io.swagger.v3.oas.annotations.tags.Tag;

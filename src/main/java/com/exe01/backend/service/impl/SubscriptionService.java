@@ -4,7 +4,6 @@ import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.converter.SubscriptionConverter;
 import com.exe01.backend.dto.request.SubscriptionRequest;
 import com.exe01.backend.dto.response.subscription.SubscriptionResponse;
-import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.Subscription;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;

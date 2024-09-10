@@ -1,12 +1,9 @@
 package com.exe01.backend.service;
 
 import com.exe01.backend.dto.request.InternshipProgramRequest;
-import com.exe01.backend.dto.request.UserRequest;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
 import com.exe01.backend.dto.response.internshipProgram.Top3Response;
-import com.exe01.backend.dto.response.user.UserResponse;
 import com.exe01.backend.entity.InternshipProgram;
-import com.exe01.backend.entity.User;
 import com.exe01.backend.exception.BaseException;
 
 import java.util.List;

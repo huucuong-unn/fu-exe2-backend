@@ -1,6 +1,5 @@
 package com.exe01.backend.service.impl;
 
-import com.amazonaws.services.simpleworkflow.flow.core.TryCatch;
 import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.converter.UniStudentConverter;
 import com.exe01.backend.dto.request.UniStudentRequest;
