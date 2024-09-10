@@ -1,6 +1,29 @@
 package com.exe01.backend.constant;
 
 public class ConstError {
+    public static class User {
+        public static final String USER_NOT_FOUND = "User not found";
+    }
+
+    public static class Business {
+        public static final String BUSINESS_NOT_FOUND = "Business not found";
+    }
+
+    public static class InternshipProgram {
+        public static final String INTERNSHIP_PROGRAM_NOT_FOUND = "Internship Program not found";
+    }
+
+    public static class Subscription {
+        public static final String SUBSCRIPTION_NOT_FOUND = "Subscription not found";
+    }
+
+    public static class UniStudent {
+        public static final String UNI_STUDENT_NOT_FOUND = "Uni Student not found";
+    }
+
+    public static class Application {
+        public static final String APPLICATION_NOT_FOUND = "Application not found";
+    }
 
     public static class Campaign {
         public static final String CAMPAIGN_NOT_FOUND = "Campaign not found";
@@ -56,10 +79,6 @@ public class ConstError {
 
     public static class MentorApply{
         public static final String MENTOR_APPLY_NOT_FOUND= "MentorApply not found";
-    }
-
-    public static class Application{
-        public static final String APPLICATION_NOT_FOUND ="Application not found";
     }
 
     public static class Transaction{

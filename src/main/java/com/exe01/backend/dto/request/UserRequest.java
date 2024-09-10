@@ -1,7 +1,5 @@
-package com.exe01.backend.entity;
+package com.exe01.backend.dto.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +11,15 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "user")
-public class User extends BaseEntity{
+public class UserRequest {
     private String name;
+
     private String email;
+
     private Date dob;
+
     private String password;
+
     private String role;
-    private String status;
+
 }

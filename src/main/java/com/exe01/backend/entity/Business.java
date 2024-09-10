@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "business")
-public class Business extends BaseEntity{
+public class Business extends BaseEntity {
 
     @OneToMany(mappedBy = "business")
     private List<InternshipProgram> internshipPrograms = new ArrayList<>();
@@ -25,9 +25,16 @@ public class Business extends BaseEntity{
     private User user;
 
     private String name;
+
     private String industry;
+
     private String location;
+
     private String description;
+
     private String logoPicture;
+
     private String backgroundPicture;
+
+    private String status;
 }

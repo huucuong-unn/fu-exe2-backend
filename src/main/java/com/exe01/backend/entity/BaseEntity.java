@@ -1,12 +1,14 @@
 package com.exe01.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity {
     @Id
     @Column(updatable = false)
     private UUID id;
@@ -33,9 +35,6 @@ public abstract class BaseEntity implements Serializable {
 
     @Column(name = "modified_date")
     private Date modifiedDate;
-
-    @Column(name = "status")
-    private String status;
 
     @PrePersist
     protected void onCreate() {
