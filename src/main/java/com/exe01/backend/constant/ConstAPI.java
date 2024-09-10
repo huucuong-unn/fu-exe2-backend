@@ -28,6 +28,11 @@ public class ConstAPI {
         public static final String CREATE_APPLICATION = "api/v1/application/create";
     }
 
+    public static class CozeAPI {
+        public static final String CREATE_CHAT = "api/v1/coze/chat";
+        public static final String UPLOAD_FILE = "api/v1/coze/file";
+    }
+
     public static class RoleAPI {
         public static final String GET_ROLE = "api/v1/role";
         public static final String GET_ROLE_STATUS_TRUE = "api/v1/role/role-status-true";
