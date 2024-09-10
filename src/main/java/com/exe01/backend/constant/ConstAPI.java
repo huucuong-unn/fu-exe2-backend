@@ -6,9 +6,26 @@ public class ConstAPI {
         public static final String CREATE_USER = "api/v1/user/create";
     }
 
+    public static class InternshipProgram {
+        public static final String CREATE_INTERNSHIP_PROGRAM = "api/v1/internship-program/create";
+        public static final String TOP_3_INTERNSHIP_PROGRAM = "api/v1/internship-program/top_3";
+    }
+
     public static class BusinessAPI {
         public static final String GET_FEATURE_COMPANY = "api/v1/business/feature-company";
         public static final String CREATE_BUSINESS = "api/v1/business/create";
+    }
+
+    public static class SubscriptionAPI {
+        public static final String CREATE_SUBSCRIPTION = "api/v1/subscription/create";
+    }
+
+    public static class UniStudentAPI {
+        public static final String CREATE_UNI_STUDENT = "api/v1/uni-student/create";
+    }
+
+    public static class ApplicationAPI {
+        public static final String CREATE_APPLICATION = "api/v1/application/create";
     }
 
     public static class RoleAPI {

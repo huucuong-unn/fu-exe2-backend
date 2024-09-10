@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity {
     @Id
     @Column(updatable = false)
     private UUID id;

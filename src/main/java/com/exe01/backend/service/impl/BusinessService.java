@@ -7,7 +7,6 @@ import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.business.FeatureCompanyResponse;
 import com.exe01.backend.entity.Business;
-import com.exe01.backend.entity.User;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.models.PagingModel;
@@ -38,7 +37,7 @@ public class BusinessService implements IBusinessService {
     public BusinessResponse create(BusinessRequest request) throws BaseException {
         try {
             logger.info("Create business");
-            User userById = userService.findById(request.getUserId());
+            userService.findById(request.getUserId());
             Business business = BusinessConverter.fromRequestToEntity(request);
             business.setStatus(ConstStatus.ACTIVE_STATUS);
             Business newBusiness = businessRepository.save(business);
@@ -65,17 +64,21 @@ public class BusinessService implements IBusinessService {
 
     @Override
     public PagingModel getFeatureCompanies(Integer page, Integer limit) throws BaseException {
-        logger.info("Get all feature company with paging");
-        PagingModel result = new PagingModel();
-        result.setPage(page);
-        Pageable pageable = PageRequest.of(page - 1, limit);
-        List<Business> featureCompanies = businessRepository.findAllByStatusOrderByCreatedDate(ConstStatus.ACTIVE_STATUS, pageable);
-        List<FeatureCompanyResponse> featureCompanyResponses = featureCompanies.stream().map(BusinessConverter::fromEntityToFeatureCompanyResponse).toList();
-        result.setListResult(featureCompanyResponses);
-        result.setTotalPage(((int) Math.ceil((double) (totalItem()) / limit)));
-        result.setLimit(limit);
-        result.setTotalCount((int) businessRepository.count());
-        return result;
+        try {
+            logger.info("Get all feature company with paging");
+            PagingModel result = new PagingModel();
+            result.setPage(page);
+            Pageable pageable = PageRequest.of(page - 1, limit);
+            List<Business> featureCompanies = businessRepository.findAllByStatusOrderByCreatedDate(ConstStatus.ACTIVE_STATUS, pageable);
+            List<FeatureCompanyResponse> featureCompanyResponses = featureCompanies.stream().map(BusinessConverter::fromEntityToFeatureCompanyResponse).toList();
+            result.setListResult(featureCompanyResponses);
+            result.setTotalPage(((int) Math.ceil((double) (totalItem()) / limit)));
+            result.setLimit(limit);
+            result.setTotalCount((int) businessRepository.count());
+            return result;
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
     }
 
     public int totalItem() {

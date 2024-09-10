@@ -1,0 +1,38 @@
+package com.exe01.backend.controller;
+
+import com.exe01.backend.constant.ConstAPI;
+import com.exe01.backend.dto.request.BusinessRequest;
+import com.exe01.backend.dto.request.InternshipProgramRequest;
+import com.exe01.backend.dto.response.business.BusinessResponse;
+import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
+import com.exe01.backend.dto.response.internshipProgram.Top3Response;
+import com.exe01.backend.exception.BaseException;
+import com.exe01.backend.models.PagingModel;
+import com.exe01.backend.service.IInternshipProgramService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin
+@RestController
+@Tag(name = "Internship Program Controller")
+@Slf4j
+public class InternshipProgramController {
+    @Autowired
+    private IInternshipProgramService internshipProgramService;
+
+    @PostMapping(value = ConstAPI.InternshipProgram.CREATE_INTERNSHIP_PROGRAM)
+    public InternshipProgramResponse create(@RequestBody InternshipProgramRequest request) throws BaseException {
+        log.info("Creating new internship program with request: {}", request);
+        return internshipProgramService.create(request);
+    }
+
+    @GetMapping(value = ConstAPI.InternshipProgram.TOP_3_INTERNSHIP_PROGRAM)
+    public List<Top3Response> getTop3InternshipProgram() throws BaseException {
+        log.info("Getting top 3 internship program in month");
+        return internshipProgramService.findTop3InternshipProgram();
+    }
+}

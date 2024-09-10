@@ -1,30 +1,20 @@
-package com.exe01.backend.entity;
+package com.exe01.backend.dto.response.internshipProgram;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "internship_program")
-public class InternshipProgram extends BaseEntity{
-    @ManyToOne
-    @JoinColumn(name = "business_id", referencedColumnName = "id")
-    private Business business;
-
-    @OneToMany(mappedBy = "internshipProgram")
-    private List<Application> applications = new ArrayList<>();
-
+public class InternshipProgramResponse {
+    private UUID businessId;
+    private UUID id;
     private String titleName;
     private String description;
     private String picture;

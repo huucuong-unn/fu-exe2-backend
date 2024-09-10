@@ -8,6 +8,7 @@ import com.exe01.backend.entity.Business;
 public class BusinessConverter {
     public static BusinessResponse fromEntityToBusinessResponse(Business business) {
         BusinessResponse businessResponse = new BusinessResponse();
+        businessResponse.setId(business.getId());
         businessResponse.setName(business.getName());
         businessResponse.setIndustry(business.getIndustry());
         businessResponse.setLocation(business.getLocation());
@@ -35,6 +36,7 @@ public class BusinessConverter {
     public static FeatureCompanyResponse fromEntityToFeatureCompanyResponse(Business business) {
         FeatureCompanyResponse featureCompanyResponse = new FeatureCompanyResponse();
         featureCompanyResponse.setName(business.getName());
+        featureCompanyResponse.setId(business.getId());
         return featureCompanyResponse;
     }
 }
