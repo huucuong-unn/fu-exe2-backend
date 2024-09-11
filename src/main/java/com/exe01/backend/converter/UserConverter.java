@@ -1,6 +1,6 @@
 package com.exe01.backend.converter;
 
-import com.exe01.backend.dto.request.UserRequest;
+import com.exe01.backend.dto.request.user.UserRequest;
 import com.exe01.backend.dto.response.user.UserResponse;
 import com.exe01.backend.entity.User;
 
@@ -11,7 +11,7 @@ public class UserConverter {
         userResponse.setName(user.getName());
         userResponse.setEmail(user.getEmail());
         userResponse.setDob(user.getDob());
-        userResponse.setPassword(user.getPassword());
+        userResponse.setRemainReviewCVTimes(user.getRemainReviewCVTimes());
         userResponse.setRole(user.getRole());
         userResponse.setStatus(user.getStatus());
 

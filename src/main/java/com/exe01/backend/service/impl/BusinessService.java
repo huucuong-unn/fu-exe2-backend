@@ -103,4 +103,17 @@ public class BusinessService implements IBusinessService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
+
+    @Override
+    public void updateImage(UUID id, String logo, String background ) throws BaseException {
+        try {
+            logger.info("Update image for business");
+            Business businessById = findById(id);
+            businessById.setLogoPicture(logo);
+            businessById.setBackgroundPicture(background);
+            businessRepository.save(businessById);
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }

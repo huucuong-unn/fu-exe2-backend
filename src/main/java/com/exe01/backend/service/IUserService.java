@@ -1,6 +1,7 @@
 package com.exe01.backend.service;
 
-import com.exe01.backend.dto.request.UserRequest;
+import com.exe01.backend.dto.request.user.LoginRequest;
+import com.exe01.backend.dto.request.user.UserRequest;
 import com.exe01.backend.dto.response.user.UserResponse;
 import com.exe01.backend.entity.User;
 import com.exe01.backend.exception.BaseException;
@@ -13,4 +14,6 @@ public interface IUserService {
     UserResponse update(UUID id, UserRequest request) throws BaseException;
 
     User findById(UUID id) throws BaseException;
+
+    UserResponse login(UserRequest request) throws BaseException;
 }

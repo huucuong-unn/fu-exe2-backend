@@ -26,8 +26,6 @@ public class BusinessConverter {
         business.setIndustry(request.getIndustry());
         business.setLocation(request.getLocation());
         business.setDescription(request.getDescription());
-        business.setLogoPicture(request.getLogoPicture());
-        business.setBackgroundPicture(request.getBackgroundPicture());
         business.setStatus(request.getStatus());
 
         return business;

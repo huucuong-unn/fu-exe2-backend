@@ -18,9 +18,7 @@ public class ApplicationConverter {
 
     public static Application fromRequestToEntity(ApplicationRequest request) {
         Application application = new Application();
-        application.setCv(request.getCv());
         application.setStatus(request.getStatus());
-
         return application;
     }
 }

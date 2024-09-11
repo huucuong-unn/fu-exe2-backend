@@ -61,7 +61,7 @@ public class FileStore {
         });
 
         try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest("tortee-image-upload", fileName, inputStream, metadata)
+            PutObjectRequest putObjectRequest = new PutObjectRequest("tortee-file-storage", fileName, inputStream, metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead);
 
             s3.putObject(putObjectRequest);

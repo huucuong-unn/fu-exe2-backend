@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -14,6 +15,6 @@ import java.util.UUID;
 public class ApplicationRequest {
     private UUID internshipProgramId;
     private UUID uniStudentId;
-    private String cv;
+    private MultipartFile cv;
     private String status;
 }

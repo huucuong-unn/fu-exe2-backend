@@ -8,7 +8,10 @@ public class UniStudentConverter {
     public static UniStudentResponse fromEntityToUniStudentResponse(UniStudent uniStudent) {
         UniStudentResponse uniStudentResponse = new UniStudentResponse();
         uniStudentResponse.setId(uniStudent.getId());
-        uniStudentResponse.setSubscriptionId(uniStudent.getSubscription().getId());
+        if(uniStudent.getSubscription() !=null)
+        {
+            uniStudentResponse.setSubscriptionId(uniStudent.getSubscription().getId());
+        }
         uniStudentResponse.setUserId(uniStudent.getUser().getId());
         uniStudentResponse.setRemainSubscription(uniStudent.getRemainSubscription());
         uniStudentResponse.setFullName(uniStudent.getFullName());
@@ -26,9 +29,6 @@ public class UniStudentConverter {
         uniStudent.setFullName(request.getFullName());
         uniStudent.setUniversity(request.getUniversity());
         uniStudent.setMajor(request.getMajor());
-        uniStudent.setCv(request.getCv());
-        uniStudent.setProfilePicture(request.getProfilePicture());
-
         return uniStudent;
     }
 }

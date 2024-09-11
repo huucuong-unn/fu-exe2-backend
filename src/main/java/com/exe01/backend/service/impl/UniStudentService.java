@@ -36,7 +36,10 @@ public class UniStudentService implements IUniStudentService {
     public UniStudentResponse create(UniStudentRequest request) throws BaseException {
         try {
             logger.info("Create UniStudent");
-            Subscription subscriptionById = subscriptionService.findById(request.getSubscriptionId());
+            Subscription subscriptionById = null;
+            if(request.getSubscriptionId() !=null){
+                subscriptionById = subscriptionService.findById(request.getSubscriptionId());
+            }
             User userById = userService.findById(request.getUserId());
             UniStudent uniStudent = UniStudentConverter.fromRequestToEntity(request);
             uniStudent.setSubscription(subscriptionById);
@@ -65,6 +68,37 @@ public class UniStudentService implements IUniStudentService {
             }
 
             return uniStudentById.get();
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public void updateImage(UUID id, String imageUrl) throws BaseException {
+        try {
+            logger.info("Update image for uni student");
+            UniStudent uniStudentById = findById(id);
+            uniStudentById.setProfilePicture(imageUrl);
+            uniStudentRepository.save(uniStudentById);
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public UniStudent findByUserId(UUID userId) throws BaseException {
+        try {
+            logger.info("Find uni student by user id");
+            Optional<UniStudent> uniStudentByUserId = uniStudentRepository.findByUserId(userId);
+            boolean isExist = uniStudentByUserId.isPresent();
+            if (!isExist) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.UniStudent.UNI_STUDENT_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            return uniStudentByUserId.get();
         } catch (Exception baseException) {
             if (baseException instanceof BaseException) {
                 throw baseException; // rethrow the original BaseException

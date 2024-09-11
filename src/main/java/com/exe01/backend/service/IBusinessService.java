@@ -16,4 +16,6 @@ public interface IBusinessService {
     PagingModel getFeatureCompanies(Integer page, Integer limit) throws BaseException;
 
     Business findById(UUID id) throws BaseException;
+
+    void updateImage(UUID id, String logo, String background) throws BaseException;
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -22,9 +23,9 @@ public class BusinessRequest {
 
     private String description;
 
-    private String logoPicture;
+    private MultipartFile logoPicture;
 
-    private String backgroundPicture;
+    private MultipartFile backgroundPicture;
 
     private String status;
 

@@ -1,5 +1,6 @@
 package com.exe01.backend.dto.response.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,13 @@ public class UserResponse {
 
     private Date dob;
 
-    private String password;
-
     private String role;
 
     private String status;
+
+    private String pictureUrl;
+
+    private int remainReviewCVTimes;
+
+
 }

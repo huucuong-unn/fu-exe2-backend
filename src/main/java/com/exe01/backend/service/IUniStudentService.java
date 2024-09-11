@@ -13,4 +13,9 @@ public interface IUniStudentService {
     UniStudentResponse update(UUID id, UniStudentRequest request) throws BaseException;
 
     UniStudent findById(UUID id) throws BaseException;
+
+    void updateImage(UUID id, String imageUrl) throws BaseException;
+
+    UniStudent findByUserId(UUID userId) throws BaseException;
+
 }

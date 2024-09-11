@@ -1,5 +1,7 @@
-package com.exe01.backend.dto.request;
+package com.exe01.backend.dto.request.user;
 
+import com.exe01.backend.dto.request.BusinessRequest;
+import com.exe01.backend.dto.request.UniStudentRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,9 @@ public class UserRequest {
     private String password;
 
     private String role;
+
+    private UniStudentRequest uniStudentRequest;
+
+    private BusinessRequest businessRequest;
 
 }

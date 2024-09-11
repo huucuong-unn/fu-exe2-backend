@@ -3,6 +3,10 @@ package com.exe01.backend.constant;
 public class ConstError {
     public static class User {
         public static final String USER_NOT_FOUND = "User not found";
+
+        public static final String INVALID_ROLE = "Invalid role";
+
+        public static final String EMAIL_EXISTED = "Email existed";
     }
 
     public static class Business {
