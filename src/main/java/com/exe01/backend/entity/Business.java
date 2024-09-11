@@ -20,6 +20,9 @@ public class Business extends BaseEntity {
     @OneToMany(mappedBy = "business")
     private List<InternshipProgram> internshipPrograms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "business")
+    private List<Blog> blogs = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
