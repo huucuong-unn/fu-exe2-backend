@@ -32,4 +32,10 @@ public class InternshipProgramController {
         log.info("Getting top 3 internship program in month");
         return internshipProgramService.findTop3InternshipProgram();
     }
+
+    @GetMapping(value = ConstAPI.InternshipProgram.LIMIT_4_INTERNSHIP_PROGRAM)
+    public List<InternshipProgramResponse> get4Limit() throws BaseException {
+        log.info("Getting 4 internship program");
+        return internshipProgramService.getAllLimit4();
+    }
 }

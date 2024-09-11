@@ -17,4 +17,6 @@ public interface IInternshipProgramService {
     InternshipProgram findById(UUID id) throws BaseException;
 
     List<Top3Response> findTop3InternshipProgram() throws BaseException;
+
+    List<InternshipProgramResponse> getAllLimit4() throws BaseException;
 }

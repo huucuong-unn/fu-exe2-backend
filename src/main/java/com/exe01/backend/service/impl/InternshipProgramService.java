@@ -16,6 +16,8 @@ import com.exe01.backend.service.IInternshipProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +33,18 @@ public class InternshipProgramService implements IInternshipProgramService {
     private IBusinessService businessService;
 
     Logger logger = LoggerFactory.getLogger(InternshipProgramService.class);
+
+    @Override
+    public List<InternshipProgramResponse> getAllLimit4() throws BaseException{
+        try {
+            logger.info("Get 4 internship program");
+            Pageable limit = PageRequest.of(0, 4);
+            List<InternshipProgram> internshipPrograms = internshipProgramRepository.getAllInternshipProgramLimit4(limit);
+            return internshipPrograms.stream().map(InternshipProgramConverter::fromEntityToInternshipProgramResponse).toList();
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 
     @Override
     public InternshipProgramResponse create(InternshipProgramRequest request) throws BaseException {

@@ -1,6 +1,7 @@
 package com.exe01.backend.repository;
 
 import com.exe01.backend.entity.InternshipProgram;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,8 @@ public interface InternshipProgramRepository extends JpaRepository<InternshipPro
             "ORDER BY COUNT(a.id) DESC " +
             "LIMIT 3")
     List<InternshipProgram> findTop3InternshipProgramsByApplications();
+
+    @Query("SELECT ip FROM InternshipProgram ip " +
+    "WHERE ip.status = 'OPEN' " )
+    List<InternshipProgram> getAllInternshipProgramLimit4(Pageable pageable);
 }
