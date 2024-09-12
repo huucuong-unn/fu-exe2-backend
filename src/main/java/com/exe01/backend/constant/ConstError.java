@@ -28,6 +28,10 @@ public class ConstError {
     public static class Application {
         public static final String APPLICATION_NOT_FOUND = "Application not found";
     }
+    public static class Blog {
+        public static final String BLOG_NOT_FOUND = "Blog not found";
+    }
+
 
     public static class Campaign {
         public static final String CAMPAIGN_NOT_FOUND = "Campaign not found";
