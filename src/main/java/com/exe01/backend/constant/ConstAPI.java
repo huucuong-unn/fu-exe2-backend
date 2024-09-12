@@ -29,6 +29,13 @@ public class ConstAPI {
         public static final String CREATE_APPLICATION = "api/v1/application/create";
     }
 
+    public static class BlogAPI {
+        public static final String CREATE_BLOG = "api/v1/blog/create";
+        public static final String UPDATE_BLOG = "api/v1/blog/update/";
+        public static final String GET_OUTSTANDING_BLOG = "api/v1/blog/outstanding";
+        public static final String GET_BLOGS = "api/v1/blog";
+    }
+
     public static class CozeAPI {
         public static final String CREATE_CHAT = "api/v1/coze/chat";
         public static final String UPLOAD_FILE = "api/v1/coze/file";
