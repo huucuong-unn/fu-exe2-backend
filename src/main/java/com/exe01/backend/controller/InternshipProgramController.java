@@ -5,6 +5,7 @@ import com.exe01.backend.dto.request.InternshipProgramRequest;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
 import com.exe01.backend.dto.response.internshipProgram.Top3Response;
 import com.exe01.backend.exception.BaseException;
+import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.service.IInternshipProgramService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +38,14 @@ public class InternshipProgramController {
     public List<InternshipProgramResponse> get4Limit() throws BaseException {
         log.info("Getting 4 internship program");
         return internshipProgramService.getAllLimit4();
+    }
+
+    @GetMapping(value = ConstAPI.InternshipProgram.GET_INTERNSHIP_PROGRAMS_SEARCH_SORT)
+    public PagingModel getInternshipProgramsSearchSort(@RequestParam(value = "page", required = false) Integer page
+                                                    , @RequestParam(value = "limit", required = false) Integer limit
+                                                    , @RequestParam(value = "keyword", required = false) String keyword
+                                                    , @RequestParam(value = "location", required = false) String location) throws BaseException {
+        log.info("Getting internship program list by search or sort");
+        return internshipProgramService.getInternshipProgramsBySearchSort(page, limit, keyword, location);
     }
 }

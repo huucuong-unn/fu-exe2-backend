@@ -18,4 +18,6 @@ public interface IBusinessService {
     Business findById(UUID id) throws BaseException;
 
     void updateImage(UUID id, String logo, String background) throws BaseException;
+
+    Business findByName(String name) throws BaseException;
 }

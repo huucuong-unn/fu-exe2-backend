@@ -32,4 +32,6 @@ public class InternshipProgramRequest {
     private String picture;
 
     private Date applicationDeadline;
+
+    private String businessName;
 }

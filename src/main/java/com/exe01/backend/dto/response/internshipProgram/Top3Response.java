@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Top3Response {
+    private UUID id;
+
     private String titleName;
 
     private String description;
@@ -25,4 +28,6 @@ public class Top3Response {
     private String businessName;
 
     private String location;
+
+    private String skill;
 }
