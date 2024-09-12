@@ -2,6 +2,7 @@ package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
 import com.exe01.backend.dto.request.InternshipProgramRequest;
+import com.exe01.backend.dto.response.internshipProgram.InternshipProgramDetailResponse;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
 import com.exe01.backend.dto.response.internshipProgram.Top3Response;
 import com.exe01.backend.exception.BaseException;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -47,5 +49,11 @@ public class InternshipProgramController {
                                                     , @RequestParam(value = "location", required = false) String location) throws BaseException {
         log.info("Getting internship program list by search or sort");
         return internshipProgramService.getInternshipProgramsBySearchSort(page, limit, keyword, location);
+    }
+
+    @GetMapping(value = ConstAPI.InternshipProgram.GET_INTERNSHIP_PROGRAMS_DETAIL + "{id}")
+    public InternshipProgramDetailResponse getInternshipProgramDetailById(@PathVariable("id") UUID id) throws BaseException {
+        log.info("Getting internship program detail by id");
+        return internshipProgramService.getInternshipProgramDetailById(id);
     }
 }

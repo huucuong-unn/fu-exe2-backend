@@ -4,6 +4,7 @@ import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.constant.ConstStatus;
 import com.exe01.backend.converter.InternshipProgramConverter;
 import com.exe01.backend.dto.request.InternshipProgramRequest;
+import com.exe01.backend.dto.response.internshipProgram.InternshipProgramDetailResponse;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
 import com.exe01.backend.dto.response.internshipProgram.Top3Response;
 import com.exe01.backend.entity.Business;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -120,6 +122,30 @@ public class InternshipProgramService implements IInternshipProgramService {
             }
 
             return internshipProgramById.get();
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public InternshipProgramDetailResponse getInternshipProgramDetailById(UUID id) throws BaseException {
+        try {
+            logger.info("Get Internship Program detail by id");
+            Optional<InternshipProgram> internshipProgramById = internshipProgramRepository.findById(id);
+            boolean isExist = internshipProgramById.isPresent();
+            if (!isExist) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.InternshipProgram.INTERNSHIP_PROGRAM_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            Business businessById = businessService.findById(internshipProgramById.get().getBusiness().getId());
+            if (Objects.isNull(businessById)) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Business.BUSINESS_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            return InternshipProgramConverter.fromEntityToInternshipProgramDetailResponse(internshipProgramById.get(), businessById);
         } catch (Exception baseException) {
             if (baseException instanceof BaseException) {
                 throw baseException; // rethrow the original BaseException
