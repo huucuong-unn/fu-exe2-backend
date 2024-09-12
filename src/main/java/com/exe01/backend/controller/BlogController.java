@@ -1,11 +1,8 @@
 package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
-import com.exe01.backend.dto.request.ApplicationRequest;
 import com.exe01.backend.dto.request.BlogRequest;
-import com.exe01.backend.dto.response.application.ApplicationResponse;
 import com.exe01.backend.dto.response.blog.BlogResponse;
-import com.exe01.backend.dto.response.internshipProgram.Top3Response;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.service.IBlogService;
