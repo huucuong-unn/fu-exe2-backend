@@ -21,14 +21,7 @@ public class UniStudent extends BaseEntity{
     private User user;
 
     @OneToMany(mappedBy = "uniStudent")
-    private List<Payment> payments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "uniStudent")
     private List<Application> applications = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
-    private Subscription subscription;
 
     private Integer remainSubscription;
     private String fullName;

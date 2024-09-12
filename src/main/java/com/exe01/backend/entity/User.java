@@ -1,13 +1,14 @@
 package com.exe01.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,11 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity{
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
+    private Subscription subscription;
     private String name;
     private String email;
     private Date dob;

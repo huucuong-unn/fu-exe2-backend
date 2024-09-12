@@ -21,8 +21,10 @@ import java.util.List;
 @Table(name = "subscription")
 public class Subscription extends BaseEntity{
     @OneToMany(mappedBy = "subscription")
-    private List<UniStudent> uniStudents = new ArrayList<>();
+    private List<User> user = new ArrayList<>();
 
+    private Double price;
+    private int reviewCVTime;
     private String planType;
     private Date startDate;
     private Date endDate;

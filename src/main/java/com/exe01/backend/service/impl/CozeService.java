@@ -7,12 +7,14 @@ import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.openfeign.CozeClient;
 import com.exe01.backend.service.ICozeService;
+import com.exe01.backend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CozeService implements ICozeService {
@@ -20,6 +22,9 @@ public class CozeService implements ICozeService {
 
     @Autowired
      CozeClient cozeClient;
+
+    @Autowired
+    IUserService userService;
     String authorizationToken = "Bearer pat_ruWxZd3Z4y2l6Qp8iFbydh7GtMxG6Zm1njHvY7OTxkMymNFHJL5l5O90ZUW9Frq3";
 
 
@@ -36,7 +41,7 @@ public class CozeService implements ICozeService {
     }
 
     @Override
-    public CozeFeedbackResponse uploadFile(MultipartFile file) throws BaseException{
+    public CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException{
         try {
         // Define the authorization token
         // Upload the file
@@ -56,6 +61,7 @@ public class CozeService implements ICozeService {
                 messages = messageListResponse.getData();
             }
         } while (messages.size() < 2);        // Parse the feedback data
+        userService.updateReviewCVTimes(userId,null);
         return parseFeedbackData(messages.get(0).getContent());
         } catch (Exception e) {
             throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");

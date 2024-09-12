@@ -37,12 +37,8 @@ public class UniStudentService implements IUniStudentService {
         try {
             logger.info("Create UniStudent");
             Subscription subscriptionById = null;
-            if(request.getSubscriptionId() !=null){
-                subscriptionById = subscriptionService.findById(request.getSubscriptionId());
-            }
             User userById = userService.findById(request.getUserId());
             UniStudent uniStudent = UniStudentConverter.fromRequestToEntity(request);
-            uniStudent.setSubscription(subscriptionById);
             uniStudent.setUser(userById);
             UniStudent newUniStudent = uniStudentRepository.save(uniStudent);
 

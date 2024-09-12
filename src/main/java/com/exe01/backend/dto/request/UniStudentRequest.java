@@ -13,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UniStudentRequest {
-    private UUID subscriptionId;
     private UUID userId;
     private Integer remainSubscription;
     private String fullName;

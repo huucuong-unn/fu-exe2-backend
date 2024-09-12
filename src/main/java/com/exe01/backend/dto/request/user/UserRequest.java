@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class UserRequest {
     private String password;
 
     private String role;
+
+    private UUID subscriptionId = UUID.fromString("6bc02c45-70f2-11ef-b077-a2f45e5369c6");
 
     private UniStudentRequest uniStudentRequest;
 

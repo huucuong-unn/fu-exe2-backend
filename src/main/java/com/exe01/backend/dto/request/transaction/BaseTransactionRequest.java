@@ -13,10 +13,6 @@ public class BaseTransactionRequest {
 
     private Double amount;
 
-    private String status;
-
-    private Integer points;
-
     private UUID accountId;
     public String vnp_OrderInfo = "Point";
     public String vnp_OrderType = "200000";

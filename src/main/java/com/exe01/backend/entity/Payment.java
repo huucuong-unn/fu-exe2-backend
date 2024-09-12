@@ -19,10 +19,10 @@ import java.time.LocalDate;
 @Table(name = "payment")
 public class Payment extends BaseEntity{
     @ManyToOne
-    @JoinColumn(name = "uniStudent_id", referencedColumnName = "id")
-    private UniStudent uniStudent;
-
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
     private Double total;
+    private String tierName;
     private String method;
     private String status;
 }

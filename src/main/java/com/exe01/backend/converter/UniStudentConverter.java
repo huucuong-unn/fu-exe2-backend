@@ -8,10 +8,6 @@ public class UniStudentConverter {
     public static UniStudentResponse fromEntityToUniStudentResponse(UniStudent uniStudent) {
         UniStudentResponse uniStudentResponse = new UniStudentResponse();
         uniStudentResponse.setId(uniStudent.getId());
-        if(uniStudent.getSubscription() !=null)
-        {
-            uniStudentResponse.setSubscriptionId(uniStudent.getSubscription().getId());
-        }
         uniStudentResponse.setUserId(uniStudent.getUser().getId());
         uniStudentResponse.setRemainSubscription(uniStudent.getRemainSubscription());
         uniStudentResponse.setFullName(uniStudent.getFullName());

@@ -10,19 +10,24 @@ import com.exe01.backend.dto.request.user.UserRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.uniStudent.UniStudentResponse;
 import com.exe01.backend.dto.response.user.UserResponse;
+import com.exe01.backend.entity.Subscription;
 import com.exe01.backend.entity.UniStudent;
 import com.exe01.backend.entity.User;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.repository.UserRepository;
+import com.exe01.backend.service.ISubscriptionService;
 import com.exe01.backend.service.IUniStudentService;
 import com.exe01.backend.service.IUserService;
 import com.exe01.backend.util.Util;
+import org.hibernate.sql.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -41,20 +46,29 @@ public class UserService implements IUserService {
     private BusinessService businessService;
 
     @Autowired
+    @Lazy
+    private ISubscriptionService subscriptionService;
+
+    @Autowired
     private Util util;
 
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Override
+    @Transactional
     public UserResponse create(UserRequest request) throws BaseException {
         try {
             logger.info("Create user");
-            String imgId;
+            String imgId ="";
             String imgId2;
             CheckEmailExistence(request.getEmail());
             User user = UserConverter.fromRequestToEntity(request);
+            Subscription subscription = subscriptionService.findById(request.getSubscriptionId());
             user.setStatus(ConstStatus.PENDING);
+            user.setSubscription(subscription);
+            user.setRemainReviewCVTimes(1);
             User newUser = userRepository.save(user);
+
             // check role to create student or business
             switch (user.getRole()) {
                 case "student":
@@ -85,8 +99,9 @@ public class UserService implements IUserService {
                 default:
                     throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.INVALID_ROLE, ErrorCode.ERROR_500.getMessage());
             }
-
-            return UserConverter.toUserResponse(newUser);
+            UserResponse userResponse = UserConverter.toUserResponse(newUser);
+            userResponse.setPictureUrl(imgId);
+            return userResponse;
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
@@ -154,6 +169,24 @@ public class UserService implements IUserService {
             if (baseException instanceof BaseException) {
                 throw baseException; // rethrow the original BaseException
             }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    @Async
+    public void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException {
+        try {
+            logger.info("Update review CV times");
+            User userById = findById(id);
+            if(subcriptionId !=null){
+                Subscription subscription = subscriptionService.findById(subcriptionId);
+                userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() + subscription.getReviewCVTime());
+            }else{
+                userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
+            }
+            userRepository.save(userById);
+        } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
