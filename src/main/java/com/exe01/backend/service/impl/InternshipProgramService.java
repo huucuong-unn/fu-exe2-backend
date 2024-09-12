@@ -10,12 +10,15 @@ import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.InternshipProgram;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
+import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.repository.InternshipProgramRepository;
 import com.exe01.backend.service.IBusinessService;
 import com.exe01.backend.service.IInternshipProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +34,60 @@ public class InternshipProgramService implements IInternshipProgramService {
     private IBusinessService businessService;
 
     Logger logger = LoggerFactory.getLogger(InternshipProgramService.class);
+
+    @Override
+    public List<InternshipProgramResponse> getAllLimit4() throws BaseException{
+        try {
+            logger.info("Get 4 internship program");
+            Pageable limit = PageRequest.of(0, 4);
+            List<InternshipProgram> internshipPrograms = internshipProgramRepository.getAllInternshipProgramLimit4(limit);
+            return internshipPrograms.stream().map(InternshipProgramConverter::fromEntityToInternshipProgramResponse).toList();
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public PagingModel getInternshipProgramsBySearchSort(Integer page, Integer limit, String keyword, String location) throws BaseException {
+        try {
+            logger.info("Get internship program list by search sort");
+            PagingModel result = new PagingModel();
+            result.setPage(page);
+            result.setLimit(limit);
+            Pageable pageable = PageRequest.of(page - 1, limit);
+            List<InternshipProgram> internshipPrograms = internshipProgramRepository.getInternshipPrograms(keyword, location, pageable);
+            result.setListResult(
+                    internshipPrograms.stream().map(internshipProgram -> {
+                try {
+                    Business businessByName = businessService.findByName(internshipProgram.getBusiness().getName());
+                    return new Top3Response(
+                            internshipProgram.getId(),
+                            internshipProgram.getTitleName(),
+                            internshipProgram.getDescription(),
+                            internshipProgram.getPicture(),
+                            internshipProgram.getCreatedDate(),
+                            businessByName.getLogoPicture(),
+                            businessByName.getName(),
+                            internshipProgram.getLocation(),
+                            internshipProgram.getSkillsAndKeywordRelate()
+                    );
+                } catch (BaseException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList());
+
+            result.setTotalPage(((int) Math.ceil((double) (totalItem()) / limit)));
+            result.setTotalCount(totalItem());
+
+            return result;
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    private int totalItem() {
+        return internshipProgramRepository.countByStatus(ConstStatus.InternshipStatus.INTERNSHIP_PROGRAM_OPEN);
+    }
 
     @Override
     public InternshipProgramResponse create(InternshipProgramRequest request) throws BaseException {
@@ -80,13 +137,15 @@ public class InternshipProgramService implements IInternshipProgramService {
                 try {
                     Business businessById = businessService.findById(internshipProgram.getBusiness().getId());
                     return new Top3Response(
+                            internshipProgram.getId(),
                             internshipProgram.getTitleName(),
                             internshipProgram.getDescription(),
                             internshipProgram.getPicture(),
                             internshipProgram.getCreatedDate(),
                             businessById.getLogoPicture(),
                             businessById.getName(),
-                            internshipProgram.getLocation()
+                            internshipProgram.getLocation(),
+                            internshipProgram.getSkillsAndKeywordRelate()
                     );
                 } catch (BaseException e) {
                     throw new RuntimeException(e);

@@ -1,4 +1,4 @@
-package com.exe01.backend.service;
+package com.exe01.backend.service.impl;
 
 import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.constant.ConstStatus;
@@ -11,7 +11,7 @@ import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.repository.BlogRepository;
-import com.exe01.backend.service.impl.BusinessService;
+import com.exe01.backend.service.IBlogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +110,7 @@ public class BlogService implements IBlogService {
         }
     }
 
-    public int totalItem() {
+    private int totalItem() {
         return blogRepository.countByStatus(ConstStatus.ACTIVE_STATUS);
     }
 }
