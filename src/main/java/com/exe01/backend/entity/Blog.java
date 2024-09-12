@@ -25,4 +25,6 @@ public class Blog extends BaseEntity {
     private String titleName;
 
     private String content;
+
+    private String status;
 }
