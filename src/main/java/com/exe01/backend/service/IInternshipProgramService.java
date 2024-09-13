@@ -25,4 +25,8 @@ public interface IInternshipProgramService {
     List<InternshipProgramResponse> getAllLimit4() throws BaseException;
 
     PagingModel getInternshipProgramsBySearchSort(Integer page, Integer limit, String keyword, String location) throws BaseException;
+
+    List<Top3Response> getLastActivitiesOfBusinessByBusinessId(UUID businessId) throws BaseException;
+
+    Boolean changeStatusById(UUID id, String status) throws BaseException;
 }

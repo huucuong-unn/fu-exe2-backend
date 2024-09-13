@@ -21,7 +21,6 @@ import com.exe01.backend.service.ISubscriptionService;
 import com.exe01.backend.service.IUniStudentService;
 import com.exe01.backend.service.IUserService;
 import com.exe01.backend.util.Util;
-import org.hibernate.sql.Update;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,6 +230,18 @@ public class UserService implements IUserService {
         User userById = findById(id);
         if (userById.getRemainReviewCVTimes() <= 0) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean changeStatus(UUID id, String status) throws BaseException {
+        try {
+            User userById = findById(id);
+            userById.setStatus(status);
+            userRepository.save(userById);
+            return true;
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
 }

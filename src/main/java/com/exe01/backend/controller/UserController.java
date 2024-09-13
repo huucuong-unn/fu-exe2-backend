@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @CrossOrigin
 @RestController
 @Tag(name = "User Controller")
@@ -36,5 +38,11 @@ public class UserController {
     public UserResponse loginWithGoogle(@RequestBody LoginRequest request) throws BaseException {
         log.info("Login with google with request: {}", request);
         return userService.loginWithGoogle(request);
+    }
+
+    @PutMapping(value = ConstAPI.UserAPI.CHANGE_STATUS + "{id}")
+    public Boolean changeStatus(@PathVariable("id") UUID id, @RequestParam(value = "status", required = false) String status) throws BaseException {
+        log.info("Change status by Id");
+        return userService.changeStatus(id, status);
     }
 }
