@@ -25,4 +25,6 @@ public interface IUserService {
     void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException;
 
     void checkRemainReviewCV(UUID id) throws BaseException;
+
+    Boolean changeStatus(UUID id, String status) throws BaseException;
 }

@@ -233,4 +233,16 @@ public class UserService implements IUserService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
         }
     }
+
+    @Override
+    public Boolean changeStatus(UUID id, String status) throws BaseException {
+        try {
+            User userById = findById(id);
+            userById.setStatus(status);
+            userRepository.save(userById);
+            return true;
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }
