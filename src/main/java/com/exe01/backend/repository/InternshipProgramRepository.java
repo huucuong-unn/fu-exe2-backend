@@ -26,7 +26,7 @@ public interface InternshipProgramRepository extends JpaRepository<InternshipPro
             "WHERE ip.status = 'OPEN' ")
     List<InternshipProgram> getAllInternshipProgramLimit4(Pageable pageable);
 
-    @Query("SELECT ip FROM InternshipProgram  ip " +
+    @Query("SELECT ip FROM InternshipProgram ip " +
             "JOIN ip.business b " +
             "WHERE (LOWER(ip.skillsAndKeywordRelate) LIKE %:keyword% " +
             "OR LOWER(ip.titleName) LIKE %:keyword% OR LOWER(b.name) LIKE %:keyword%) " +
@@ -36,6 +36,21 @@ public interface InternshipProgramRepository extends JpaRepository<InternshipPro
     List<InternshipProgram> getInternshipPrograms(@Param("keyword") String keyword
                                                 , @Param("location") String location
                                                 , Pageable pageable);
+
+    @Query("SELECT COUNT(ip) FROM InternshipProgram ip " +
+            "JOIN ip.business b " +
+            "WHERE (LOWER(ip.skillsAndKeywordRelate) LIKE %:keyword% " +
+            "OR LOWER(ip.titleName) LIKE %:keyword% OR LOWER(b.name) LIKE %:keyword%) " +
+            "AND (LOWER(ip.location) LIKE :location OR :location = 'All city') " +
+            "AND ip.status = 'OPEN' " +
+            "ORDER BY ip.createdDate DESC")
+    int countBySearchSort(@Param("keyword") String keyword
+            , @Param("location") String location);
+
+    @Query("SELECT ip FROM InternshipProgram ip " +
+    "WHERE ip.business.id = :businessId AND (ip.status = 'OPEN' OR ip.status = 'CLOSE') " +
+    "ORDER BY ip.createdDate DESC")
+    List<InternshipProgram> getLastActivitiesByBusinessId(@Param("businessId") UUID businessId, Pageable pageable);
 
     int countByStatus(String status);
 }

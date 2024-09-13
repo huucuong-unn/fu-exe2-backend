@@ -78,11 +78,49 @@ public class InternshipProgramService implements IInternshipProgramService {
                 }
             }).toList());
 
-            result.setTotalPage(((int) Math.ceil((double) (totalItem()) / limit)));
-            result.setTotalCount(totalItem());
+            result.setTotalPage(((int) Math.ceil((double) (internshipProgramRepository.countBySearchSort(keyword, location)) / limit)));
+            result.setTotalCount(internshipProgramRepository.countBySearchSort(keyword, location));
 
             return result;
         } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public List<Top3Response> getLastActivitiesOfBusinessByBusinessId(UUID businessId) throws BaseException {
+        try {
+            logger.info("Find last activities of business by business id");
+            Pageable limit = PageRequest.of(0, 2);
+            List<InternshipProgram> internshipPrograms = internshipProgramRepository.getLastActivitiesByBusinessId(businessId, limit);
+            Business businessById = businessService.findById(businessId);
+            return internshipPrograms.stream().map(internshipProgram -> new Top3Response(
+                    internshipProgram.getId(),
+                    internshipProgram.getTitleName(),
+                    internshipProgram.getDescription(),
+                    internshipProgram.getPicture(),
+                    internshipProgram.getCreatedDate(),
+                    businessById.getLogoPicture(),
+                    businessById.getName(),
+                    internshipProgram.getLocation(),
+                    internshipProgram.getSkillsAndKeywordRelate()
+            )).toList();
+        } catch (Exception baseException) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public Boolean changeStatusById(UUID id, String status) throws BaseException {
+        try {
+            InternshipProgram internshipProgramById = findById(id);
+            internshipProgramById.setStatus(status);
+            internshipProgramRepository.save(internshipProgramById);
+            return true;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
