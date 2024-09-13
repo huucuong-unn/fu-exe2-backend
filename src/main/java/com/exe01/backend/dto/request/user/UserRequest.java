@@ -15,6 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
+
+    private  UUID id;
     private String name;
 
     private String email;
@@ -25,10 +27,15 @@ public class UserRequest {
 
     private String role;
 
+    private String status;;
+
+
     private UUID subscriptionId = UUID.fromString("6bc02c45-70f2-11ef-b077-a2f45e5369c6");
 
     private UniStudentRequest uniStudentRequest;
 
     private BusinessRequest businessRequest;
+
+    private String message;
 
 }

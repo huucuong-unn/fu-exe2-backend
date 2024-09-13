@@ -10,13 +10,11 @@ import com.exe01.backend.dto.request.user.UserRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.uniStudent.UniStudentResponse;
 import com.exe01.backend.dto.response.user.UserResponse;
-import com.exe01.backend.entity.Business;
-import com.exe01.backend.entity.Subscription;
-import com.exe01.backend.entity.UniStudent;
-import com.exe01.backend.entity.User;
+import com.exe01.backend.entity.*;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.repository.UserRepository;
+import com.exe01.backend.service.IEmailService;
 import com.exe01.backend.service.ISubscriptionService;
 import com.exe01.backend.service.IUniStudentService;
 import com.exe01.backend.service.IUserService;
@@ -48,6 +46,10 @@ public class UserService implements IUserService {
     @Autowired
     @Lazy
     private ISubscriptionService subscriptionService;
+
+    @Autowired
+    @Lazy
+    private IEmailService emailService;
 
     @Autowired
     private Util util;
@@ -234,14 +236,29 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Boolean changeStatus(UUID id, String status) throws BaseException {
+    public Boolean changeStatus(UUID id, String status, String message) throws BaseException {
         try {
             User userById = findById(id);
             userById.setStatus(status);
             userRepository.save(userById);
+
+            EmailDetailsEntity emailDetailsEntity = new EmailDetailsEntity();
+            emailDetailsEntity.setRecipient(userById.getEmail());
+            emailDetailsEntity.setSubject("Account Status");
+            emailDetailsEntity.setMsgBody(message);
+            emailDetailsEntity.setResult(status);
+            emailDetailsEntity.setType("ACCOUNT");
+
+            emailService.sendSimpleMail(emailDetailsEntity);
+
             return true;
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

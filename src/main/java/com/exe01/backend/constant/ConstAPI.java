@@ -6,7 +6,7 @@ public class ConstAPI {
         public static final String CREATE_USER = "api/v1/user/create";
         public static final String LOGIN = "api/v1/user/login";
         public static final String LOGIN_GOOGLE = "api/v1/user/login-google";
-        public static final String CHANGE_STATUS = "api/v1/user/change-status/";
+        public static final String CHANGE_STATUS = "api/v1/user/status";
     }
 
     public static class InternshipProgram {
@@ -34,6 +34,7 @@ public class ConstAPI {
 
     public static class ApplicationAPI {
         public static final String CREATE_APPLICATION = "api/v1/application/create";
+        public static final String CHANGE_STATUS = "api/v1/application/status";
     }
 
     public static class BlogAPI {

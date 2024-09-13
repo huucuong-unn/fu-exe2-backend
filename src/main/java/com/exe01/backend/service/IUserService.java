@@ -25,5 +25,7 @@ public interface IUserService {
 
     void checkRemainReviewCV(UUID id) throws BaseException;
 
-    Boolean changeStatus(UUID id, String status) throws BaseException;
+    Boolean changeStatus(UUID id, String status, String message) throws BaseException;
+
+    User findByEmail(String email);
 }

@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @PutMapping(value = ConstAPI.UserAPI.CHANGE_STATUS + "{id}")
-    public Boolean changeStatus(@PathVariable("id") UUID id, @RequestParam(value = "status", required = false) String status) throws BaseException {
+    public Boolean changeStatus(@RequestBody UserRequest userRequest) throws BaseException {
         log.info("Change status by Id");
-        return userService.changeStatus(id, status);
+        return userService.changeStatus(userRequest.getId(), userRequest.getStatus(), userRequest.getMessage());
     }
 }

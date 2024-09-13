@@ -5,12 +5,14 @@ import com.exe01.backend.converter.ApplicationConverter;
 import com.exe01.backend.dto.request.ApplicationRequest;
 import com.exe01.backend.dto.response.application.ApplicationResponse;
 import com.exe01.backend.entity.Application;
+import com.exe01.backend.entity.EmailDetailsEntity;
 import com.exe01.backend.entity.InternshipProgram;
 import com.exe01.backend.entity.UniStudent;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.repository.ApplicationRepository;
 import com.exe01.backend.service.IApplicationService;
+import com.exe01.backend.service.IEmailService;
 import com.exe01.backend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,9 @@ public class ApplicationService implements IApplicationService {
     @Autowired
     private InternshipProgramService internshipProgramService;
 
+    @Autowired
+    private IEmailService emailService;
+
     Logger logger = LoggerFactory.getLogger(ApplicationService.class);
 
     @Override
@@ -45,11 +50,11 @@ public class ApplicationService implements IApplicationService {
             Application application = ApplicationConverter.fromRequestToEntity(request);
             application.setInternshipProgram(internshipProgramById);
             application.setUniStudent(uniStudentById);
-             application.setStatus("PENDING");
-            String cvFile = util.uploadCvFile(UUID.randomUUID(),request.getCv());
+            application.setStatus("PENDING");
+            String cvFile = util.uploadCvFile(UUID.randomUUID(), request.getCv());
             application.setCv(cvFile);
             Application newApplication = applicationRepository.save(application);
-             newApplication.setCv(cvFile);
+            newApplication.setCv(cvFile);
             return ApplicationConverter.fromEntityToApplicationResponse(newApplication);
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
@@ -81,12 +86,21 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public void changeStatus(String status, UUID applicationId) throws BaseException {
+    public void changeStatus(String status, UUID applicationId, String message) throws BaseException {
         try {
             logger.info("Change status for application");
             Application applicationById = findById(applicationId);
             applicationById.setStatus(status);
             applicationRepository.save(applicationById);
+
+            EmailDetailsEntity emailDetailsEntity = new EmailDetailsEntity();
+            emailDetailsEntity.setRecipient(applicationById.getUniStudent().getUser().getEmail());
+            emailDetailsEntity.setSubject("Application status");
+            emailDetailsEntity.setMsgBody(message);
+            emailDetailsEntity.setResult(status);
+            emailDetailsEntity.setType("APPLICATION");
+
+            emailService.sendSimpleMail(emailDetailsEntity);
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }

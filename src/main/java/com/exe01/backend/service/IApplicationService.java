@@ -14,5 +14,5 @@ public interface IApplicationService {
 
     Application findById(UUID id) throws BaseException;
 
-    void changeStatus(String status, UUID applicationId) throws BaseException;
+    void changeStatus(String status, UUID applicationId,String message) throws BaseException;
 }

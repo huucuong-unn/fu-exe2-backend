@@ -14,6 +14,7 @@ public class EmailDetailsEntity {
     // Class data members
     private String recipient;
     private String msgBody;
+    private String result;
     private String subject;
     private String attachment;
     private String type;

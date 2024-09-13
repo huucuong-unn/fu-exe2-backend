@@ -1,7 +1,9 @@
 package com.exe01.backend.service.impl;
 
 import com.exe01.backend.entity.EmailDetailsEntity;
+import com.exe01.backend.entity.User;
 import com.exe01.backend.service.IEmailService;
+import com.exe01.backend.service.IUserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +27,21 @@ public class EmailService implements IEmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    private IUserService userService;
 
 
     @Value("${spring.mail.username}")
     private String sender;
 
 
-    private String processThymeleafTemplate(String email, String message, String type) {
+    private String processThymeleafTemplate(String email, String message, String result,String type) {
 
         Context context = new Context();
-        context.setVariable("customerName", "a");
+        User user = userService.findByEmail(email);
+        context.setVariable("customerName", user.getName());
         context.setVariable("message", message);
+        context.setVariable("result", result);
 
         if(type.equals("ACCOUNT"))
         {
@@ -63,9 +69,8 @@ public class EmailService implements IEmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             mimeMessageHelper.setFrom(sender);
             mimeMessageHelper.setTo(details.getRecipient());
-            String emailContent=null;
 
-            emailContent = processThymeleafTemplate(details.getRecipient(), details.getMsgBody(), details.getType());
+            String emailContent = processThymeleafTemplate(details.getRecipient(), details.getMsgBody(),details.getResult() , details.getType());
             mimeMessageHelper.setSubject(details.getSubject());
             mimeMessageHelper.setText(emailContent, true); // Set the content type to HTML
 

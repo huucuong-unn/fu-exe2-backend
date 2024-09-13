@@ -13,8 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationRequest {
+    private UUID id;
     private UUID internshipProgramId;
     private UUID uniStudentId;
     private MultipartFile cv;
     private String status;
+    private String message;
 }

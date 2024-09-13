@@ -24,4 +24,8 @@ public class ApplicationController {
         log.info("Creating new application with request: {}", request);
         return applicationService.create(request);
     }
+    @PutMapping(value = ConstAPI.ApplicationAPI.CHANGE_STATUS)
+    public void changeStatus(@RequestBody ApplicationRequest request) throws BaseException {
+        applicationService.changeStatus(request.getStatus(), request.getId(), request.getMessage());
+    }
 }
