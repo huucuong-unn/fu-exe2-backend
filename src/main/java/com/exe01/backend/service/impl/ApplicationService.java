@@ -11,6 +11,7 @@ import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.repository.ApplicationRepository;
 import com.exe01.backend.service.IApplicationService;
+import com.exe01.backend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ApplicationService implements IApplicationService {
     private UniStudentService uniStudentService;
 
     @Autowired
+    private Util util;
+
+    @Autowired
     private InternshipProgramService internshipProgramService;
 
     Logger logger = LoggerFactory.getLogger(ApplicationService.class);
@@ -41,8 +45,11 @@ public class ApplicationService implements IApplicationService {
             Application application = ApplicationConverter.fromRequestToEntity(request);
             application.setInternshipProgram(internshipProgramById);
             application.setUniStudent(uniStudentById);
-
+             application.setStatus("PENDING");
+            String cvFile = util.uploadCvFile(UUID.randomUUID(),request.getCv());
+            application.setCv(cvFile);
             Application newApplication = applicationRepository.save(application);
+             newApplication.setCv(cvFile);
             return ApplicationConverter.fromEntityToApplicationResponse(newApplication);
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
@@ -69,6 +76,18 @@ public class ApplicationService implements IApplicationService {
             if (baseException instanceof BaseException) {
                 throw baseException; // rethrow the original BaseException
             }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public void changeStatus(String status, UUID applicationId) throws BaseException {
+        try {
+            logger.info("Change status for application");
+            Application applicationById = findById(applicationId);
+            applicationById.setStatus(status);
+            applicationRepository.save(applicationById);
+        } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }

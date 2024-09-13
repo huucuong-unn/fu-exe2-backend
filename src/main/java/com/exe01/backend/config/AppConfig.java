@@ -2,6 +2,7 @@ package com.exe01.backend.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,9 +13,9 @@ import java.util.Properties;
 
 @Configuration
 public class AppConfig {
-   // @Value("${spring.mail.username}")
+    @Value("${spring.mail.username}")
     private String sender;
-  //  @Value("${spring.mail.password}")
+     @Value("${spring.mail.password}")
     private String password;
 
 

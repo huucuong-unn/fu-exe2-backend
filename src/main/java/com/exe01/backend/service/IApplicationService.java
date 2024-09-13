@@ -13,4 +13,6 @@ public interface IApplicationService {
     ApplicationResponse update(UUID id, ApplicationRequest request) throws BaseException;
 
     Application findById(UUID id) throws BaseException;
+
+    void changeStatus(String status, UUID applicationId) throws BaseException;
 }

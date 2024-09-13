@@ -8,10 +8,8 @@ import com.exe01.backend.service.IApplicationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -21,8 +19,8 @@ public class ApplicationController {
     @Autowired
     private IApplicationService applicationService;
 
-    @PostMapping(value = ConstAPI.ApplicationAPI.CREATE_APPLICATION)
-    public ApplicationResponse create(@RequestBody ApplicationRequest request) throws BaseException {
+    @PostMapping(value = ConstAPI.ApplicationAPI.CREATE_APPLICATION,  consumes = MediaType.MULTIPART_FORM_DATA_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApplicationResponse create(@ModelAttribute ApplicationRequest request) throws BaseException {
         log.info("Creating new application with request: {}", request);
         return applicationService.create(request);
     }
