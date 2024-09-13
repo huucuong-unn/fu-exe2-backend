@@ -14,6 +14,8 @@ public class ConstAPI {
         public static final String LIMIT_4_INTERNSHIP_PROGRAM = "api/v1/internship-program/limit_4";
         public static final String GET_INTERNSHIP_PROGRAMS_SEARCH_SORT = "api/v1/internship-program";
         public static final String GET_INTERNSHIP_PROGRAMS_DETAIL = "api/v1/internship-program/";
+        public static final String GET_LAST_ACTIVITIES = "api/v1/internship-program/last-activities/";
+        public static final String CHANGE_STATUS = "api/v1/internship-program/change-status/";
     }
 
     public static class BusinessAPI {

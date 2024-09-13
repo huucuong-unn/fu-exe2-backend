@@ -56,4 +56,16 @@ public class InternshipProgramController {
         log.info("Getting internship program detail by id");
         return internshipProgramService.getInternshipProgramDetailById(id);
     }
+
+    @GetMapping(value = ConstAPI.InternshipProgram.GET_LAST_ACTIVITIES + "{id}")
+    public List<Top3Response> getLastActivitiesByBusinessId(@PathVariable("id") UUID businessId) throws BaseException {
+        log.info("Getting last activities by business id");
+        return internshipProgramService.getLastActivitiesOfBusinessByBusinessId(businessId);
+    }
+
+    @PutMapping(value = ConstAPI.InternshipProgram.CHANGE_STATUS + "{id}")
+    public Boolean changeStatus(@PathVariable("id") UUID businessId, @RequestParam(value = "status", required = true) String status) throws BaseException {
+        log.info("Change status by Id");
+        return internshipProgramService.changeStatusById(businessId, status);
+    }
 }
