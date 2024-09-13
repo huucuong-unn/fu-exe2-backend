@@ -10,6 +10,9 @@ public class ConstAPI {
     public static class InternshipProgram {
         public static final String CREATE_INTERNSHIP_PROGRAM = "api/v1/internship-program/create";
         public static final String TOP_3_INTERNSHIP_PROGRAM = "api/v1/internship-program/top_3";
+        public static final String LIMIT_4_INTERNSHIP_PROGRAM = "api/v1/internship-program/limit_4";
+        public static final String GET_INTERNSHIP_PROGRAMS_SEARCH_SORT = "api/v1/internship-program";
+        public static final String GET_INTERNSHIP_PROGRAMS_DETAIL = "api/v1/internship-program/";
     }
 
     public static class BusinessAPI {

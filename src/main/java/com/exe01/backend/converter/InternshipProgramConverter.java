@@ -1,7 +1,9 @@
 package com.exe01.backend.converter;
 
 import com.exe01.backend.dto.request.InternshipProgramRequest;
+import com.exe01.backend.dto.response.internshipProgram.InternshipProgramDetailResponse;
 import com.exe01.backend.dto.response.internshipProgram.InternshipProgramResponse;
+import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.InternshipProgram;
 
 public class InternshipProgramConverter {
@@ -37,5 +39,22 @@ public class InternshipProgramConverter {
         internshipProgram.setApplicationDeadline(request.getApplicationDeadline());
 
         return internshipProgram;
+    }
+
+    public static InternshipProgramDetailResponse fromEntityToInternshipProgramDetailResponse(InternshipProgram internshipProgram, Business business){
+        InternshipProgramDetailResponse response = new InternshipProgramDetailResponse();
+        response.setId(internshipProgram.getId());
+        response.setBusinessId(business.getId());
+        response.setPicture(internshipProgram.getPicture());
+        response.setLocation(internshipProgram.getLocation());
+        response.setDescription(internshipProgram.getDescription());
+        response.setBenefit(internshipProgram.getBenefits());
+        response.setRequirement(internshipProgram.getRequirements());
+        response.setSkillAndKeywordRelated(internshipProgram.getSkillsAndKeywordRelate());
+        response.setBusinessName(business.getName());
+        response.setBusinessLocation(business.getLocation());
+        response.setAboutBusiness(business.getDescription());
+
+        return response;
     }
 }

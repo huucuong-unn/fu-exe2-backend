@@ -6,6 +6,11 @@ public class ConstStatus {
     public static final String INACTIVE_STATUS = "INACTIVE";
     public static final String PENDING = "PENDING";
 
+    public static class InternshipStatus {
+        public static final String INTERNSHIP_PROGRAM_OPEN = "OPEN";;
+
+    }
+
     public static class CampaignStatus {
         public static final String COMPANY_APPLY = "COMPANY_APPLY";
         public static final String STUDENT_APPLY = "STUDENT_APPLY";

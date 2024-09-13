@@ -5,29 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Top3Response {
+public class InternshipProgramDetailResponse {
     private UUID id;
-
-    private String titleName;
-
-    private String description;
-
+    private UUID businessId;
     private String picture;
-
-    private Date createDate;
-
-    private String businessPicture;
-
-    private String businessName;
-
     private String location;
+    private String description;
+    private String benefit;
+    private String requirement;
+    private String skillAndKeywordRelated;
+    private String businessName;
+    private String businessLocation;
+    private String aboutBusiness;
 
-    private String skill;
 }
