@@ -13,5 +13,4 @@ public interface ICozeService {
     CozeCreateChatResponse createChat(String fileId) throws BaseException;
 
     CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException;
-
 }

@@ -5,6 +5,7 @@ public class ConstAPI {
     public static class UserAPI {
         public static final String CREATE_USER = "api/v1/user/create";
         public static final String LOGIN = "api/v1/user/login";
+        public static final String LOGIN_GOOGLE = "api/v1/user/login-google";
     }
 
     public static class InternshipProgram {

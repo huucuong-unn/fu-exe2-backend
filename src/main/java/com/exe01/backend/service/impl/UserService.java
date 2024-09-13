@@ -10,6 +10,7 @@ import com.exe01.backend.dto.request.user.UserRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.uniStudent.UniStudentResponse;
 import com.exe01.backend.dto.response.user.UserResponse;
+import com.exe01.backend.entity.Business;
 import com.exe01.backend.entity.Subscription;
 import com.exe01.backend.entity.UniStudent;
 import com.exe01.backend.entity.User;
@@ -59,7 +60,7 @@ public class UserService implements IUserService {
     public UserResponse create(UserRequest request) throws BaseException {
         try {
             logger.info("Create user");
-            String imgId ="";
+            String imgId = "";
             String imgId2;
             CheckEmailExistence(request.getEmail());
             User user = UserConverter.fromRequestToEntity(request);
@@ -107,7 +108,7 @@ public class UserService implements IUserService {
         }
     }
 
-    private boolean CheckEmailExistence(String email) throws BaseException{
+    private boolean CheckEmailExistence(String email) throws BaseException {
         Optional<User> userByEmail = userRepository.findByEmail(email);
         if (userByEmail.isPresent()) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.EMAIL_EXISTED, ErrorCode.ERROR_500.getMessage());
@@ -174,20 +175,62 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserResponse loginWithGoogle(LoginRequest request) throws BaseException {
+        try {
+            logger.info("Find user by email and role");
+            Optional<User> userByEmailAndPassword = userRepository.findByEmailAndRole(
+                    request.getEmail(),
+                    request.getRole()
+            );
+            if (userByEmailAndPassword == null) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.USER_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+            UserResponse userResponse = UserConverter.toUserResponse(userByEmailAndPassword.get());
+
+            switch (request.getRole()) {
+                case "student":
+                    UniStudent uniStudent = uniStudentService.findByUserId(userByEmailAndPassword.get().getId());
+                    userResponse.setPictureUrl(uniStudent.getProfilePicture());
+                    break;
+                case "business": {
+                    Business businessResponse = businessService.findByUserId(userByEmailAndPassword.get().getId());
+                    userResponse.setPictureUrl(businessResponse.getLogoPicture());
+                }
+                default:
+                    break;
+            }
+            return userResponse;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
     @Async
     public void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException {
         try {
             logger.info("Update review CV times");
             User userById = findById(id);
-            if(subcriptionId !=null){
+            if (subcriptionId != null) {
                 Subscription subscription = subscriptionService.findById(subcriptionId);
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() + subscription.getReviewCVTime());
-            }else{
+            } else {
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
             }
             userRepository.save(userById);
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
+    public void checkRemainReviewCV(UUID id) throws BaseException {
+        User userById = findById(id);
+        if (userById.getRemainReviewCVTimes() <= 0) {
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
         }
     }
 }

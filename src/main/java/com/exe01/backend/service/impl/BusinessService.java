@@ -134,4 +134,22 @@ public class BusinessService implements IBusinessService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
+
+    @Override
+    public Business findByUserId(UUID userId) throws BaseException {
+        try {
+            logger.info("Find business by user id");
+            Business businessByUserId = businessRepository.findByUserId(userId);
+            if (businessByUserId == null) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Business.BUSINESS_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            return businessByUserId;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }

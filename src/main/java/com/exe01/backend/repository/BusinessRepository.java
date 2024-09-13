@@ -18,4 +18,6 @@ public interface BusinessRepository extends JpaRepository<Business, UUID> {
     "WHERE (LOWER(b.name) LIKE %:name% OR :name IS NULL)" +
     "AND b.status = 'ACTIVE'")
     Business findByName(@Param("name") String name);
+
+    Business findByUserId(UUID userId);
 }

@@ -1,4 +1,5 @@
 package com.exe01.backend.service.impl;
+
 import com.exe01.backend.dto.request.coze.CozeCreateChatRequest;
 import com.exe01.backend.dto.response.coze.CozeCreateChatResponse;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
@@ -21,7 +22,7 @@ public class CozeService implements ICozeService {
 
 
     @Autowired
-     CozeClient cozeClient;
+    CozeClient cozeClient;
 
     @Autowired
     IUserService userService;
@@ -37,32 +38,34 @@ public class CozeService implements ICozeService {
         additionalMessages.add(additionalMessage);
         chatRequest.setAdditionalMessages(additionalMessages);
         // Create a chat with the uploaded file
-         return  cozeClient.createChat(authorizationToken,chatRequest);
+        return cozeClient.createChat(authorizationToken, chatRequest);
     }
 
     @Override
-    public CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException{
+    public CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException {
         try {
-        // Define the authorization token
-        // Upload the file
-        CozeUploadFileResponse fileResponse =  cozeClient.uploadFile(authorizationToken,file);
+            //check remain review cv
+            userService.checkRemainReviewCV(userId);
+            // Define the authorization token
+            // Upload the file
+            CozeUploadFileResponse fileResponse = cozeClient.uploadFile(authorizationToken, file);
 //        // Create chat
-        CozeCreateChatResponse chatResponse =  createChat(fileResponse.getData().getId());
-        //get message list
-        List<CozeMessageListResponse.ChatData> messages;
-        do {
-            CozeMessageListResponse messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
-            messages = messageListResponse.getData();
-            if (messages.size() < 2) {
-                Thread.sleep(1000); // Sleep for 1 second before retrying
-            }else{
-                Thread.sleep(5000); // Sleep for 10 second before retrying
-                messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+            CozeCreateChatResponse chatResponse = createChat(fileResponse.getData().getId());
+            //get message list
+            List<CozeMessageListResponse.ChatData> messages;
+            do {
+                CozeMessageListResponse messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
                 messages = messageListResponse.getData();
-            }
-        } while (messages.size() < 2);        // Parse the feedback data
-        userService.updateReviewCVTimes(userId,null);
-        return parseFeedbackData(messages.get(0).getContent());
+                if (messages.size() < 2) {
+                    Thread.sleep(1000); // Sleep for 1 second before retrying
+                } else {
+                    Thread.sleep(5000); // Sleep for 10 second before retrying
+                    messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+                    messages = messageListResponse.getData();
+                }
+            } while (messages.size() < 2);        // Parse the feedback data
+            userService.updateReviewCVTimes(userId, null);
+            return parseFeedbackData(messages.get(0).getContent());
         } catch (Exception e) {
             throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");
         }

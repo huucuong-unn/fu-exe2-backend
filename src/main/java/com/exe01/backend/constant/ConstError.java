@@ -1,6 +1,12 @@
 package com.exe01.backend.constant;
 
 public class ConstError {
+
+    public static class Coze {
+        public static final String OUT_OF_TIMES = "Don't have enough times to use this feature";
+    }
+
+
     public static class User {
         public static final String USER_NOT_FOUND = "User not found";
 

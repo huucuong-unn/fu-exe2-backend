@@ -31,4 +31,10 @@ public class UserController {
         log.info("Login with request: {}", request);
         return userService.login(request);
     }
+
+    @PostMapping(value = ConstAPI.UserAPI.LOGIN_GOOGLE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponse loginWithGoogle(@RequestBody LoginRequest request) throws BaseException {
+        log.info("Login with google with request: {}", request);
+        return userService.loginWithGoogle(request);
+    }
 }

@@ -19,6 +19,10 @@ public interface IUserService {
 
     UserResponse login(UserRequest request) throws BaseException;
 
+    UserResponse loginWithGoogle(LoginRequest request) throws BaseException;
+
     @Async
     void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException;
+
+    void checkRemainReviewCV(UUID id) throws BaseException;
 }
