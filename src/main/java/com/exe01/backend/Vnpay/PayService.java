@@ -49,6 +49,7 @@ private String frontEndHost = "a";
         logger.info("vnp_CreateDate: {}", vnp_CreateDate);
 
         cld.add(Calendar.MINUTE, 2);
+        cld.add(Calendar.HOUR, 7);
 
         String vnp_ExpireDate = formatter.format(cld.getTime());
 
@@ -120,13 +121,12 @@ private String frontEndHost = "a";
             UUID accountId = UUID.fromString(extractValue(txnRef, 2));
             userService.updateReviewCVTimes(accountId, subcriptionId);
             paymentService.changeStatus(ConstStatus.TransactionStatus.SUCCESS_STATUS ,paymentId);
-          //  return new RedirectView(frontEndHost+ "user/history");
+            return new RedirectView(frontEndHost+ "/payment/success");
         } else {
             paymentService.changeStatus(ConstStatus.TransactionStatus.FAILED_STATUS ,paymentId);
             // Trạng thái thất bại
-          //  return new RedirectView(frontEndHost+ "pay-failed");
+            return new RedirectView(frontEndHost+ "/payment/failed");
         }
-        return null;
     }
 
     private  String extractValue(String input, int groupIndex) {
