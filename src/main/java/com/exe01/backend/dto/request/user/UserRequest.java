@@ -27,7 +27,7 @@ public class UserRequest {
 
     private String role;
 
-    private String status;;
+    private String status;
 
 
     private UUID subscriptionId = UUID.fromString("be6ca373-33fa-4e67-b779-b228e25a3e29");
