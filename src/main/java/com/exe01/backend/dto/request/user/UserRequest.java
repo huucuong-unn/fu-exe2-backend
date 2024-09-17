@@ -30,7 +30,7 @@ public class UserRequest {
     private String status;
 
 
-    private UUID subscriptionId = UUID.fromString("be6ca373-33fa-4e67-b779-b228e25a3e29");
+    private UUID subscriptionId = UUID.fromString("935afd77-74b1-11ef-b077-a2f45e5369c6");
 
     private UniStudentRequest uniStudentRequest;
 
