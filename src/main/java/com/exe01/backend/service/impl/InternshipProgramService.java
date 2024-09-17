@@ -15,6 +15,7 @@ import com.exe01.backend.models.PagingModel;
 import com.exe01.backend.repository.InternshipProgramRepository;
 import com.exe01.backend.service.IBusinessService;
 import com.exe01.backend.service.IInternshipProgramService;
+import com.exe01.backend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class InternshipProgramService implements IInternshipProgramService {
 
     @Autowired
     private IBusinessService businessService;
+
+    @Autowired
+    private Util util;
 
     Logger logger = LoggerFactory.getLogger(InternshipProgramService.class);
 
@@ -137,7 +141,10 @@ public class InternshipProgramService implements IInternshipProgramService {
             InternshipProgram internshipProgram = InternshipProgramConverter.fromRequestToEntity(request);
             internshipProgram.setBusiness(businessById);
             internshipProgram.setStatus(ConstStatus.INACTIVE_STATUS);
+            String pictureFile = util.uploadImage(UUID.randomUUID(), request.getPicture());
+            internshipProgram.setPicture(pictureFile);
             InternshipProgram newInternshipProgram = internshipProgramRepository.save(internshipProgram);
+            newInternshipProgram.setPicture(pictureFile);
             return InternshipProgramConverter.fromEntityToInternshipProgramResponse(newInternshipProgram);
         } catch (Exception baseException) {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());

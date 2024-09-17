@@ -7,6 +7,7 @@ import com.exe01.backend.dto.request.BusinessRequest;
 import com.exe01.backend.dto.response.business.BusinessResponse;
 import com.exe01.backend.dto.response.business.FeatureCompanyResponse;
 import com.exe01.backend.entity.Business;
+import com.exe01.backend.entity.User;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.models.PagingModel;
@@ -37,8 +38,9 @@ public class BusinessService implements IBusinessService {
     public BusinessResponse create(BusinessRequest request) throws BaseException {
         try {
             logger.info("Create business");
-            userService.findById(request.getUserId());
+            User userById = userService.findById(request.getUserId());
             Business business = BusinessConverter.fromRequestToEntity(request);
+            business.setUser(userById);
             business.setStatus(ConstStatus.ACTIVE_STATUS);
             Business newBusiness = businessRepository.save(business);
             return BusinessConverter.fromEntityToBusinessResponse(newBusiness);

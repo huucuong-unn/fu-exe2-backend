@@ -11,6 +11,7 @@ import com.exe01.backend.service.IInternshipProgramService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class InternshipProgramController {
     @Autowired
     private IInternshipProgramService internshipProgramService;
 
-    @PostMapping(value = ConstAPI.InternshipProgram.CREATE_INTERNSHIP_PROGRAM)
-    public InternshipProgramResponse create(@RequestBody InternshipProgramRequest request) throws BaseException {
+    @PostMapping(value = ConstAPI.InternshipProgram.CREATE_INTERNSHIP_PROGRAM, consumes = MediaType.MULTIPART_FORM_DATA_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public InternshipProgramResponse create(@ModelAttribute InternshipProgramRequest request) throws BaseException {
         log.info("Creating new internship program with request: {}", request);
         return internshipProgramService.create(request);
     }

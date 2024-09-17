@@ -28,7 +28,6 @@ public class InternshipProgramConverter {
     public static InternshipProgram fromRequestToEntity(InternshipProgramRequest request) {
         InternshipProgram internshipProgram = new InternshipProgram();
         internshipProgram.setId(request.getBusinessId());
-        internshipProgram.setPicture(request.getPicture());
         internshipProgram.setTitleName(request.getTitleName());
         internshipProgram.setDescription(request.getDescription());
         internshipProgram.setBenefits(request.getBenefits());
