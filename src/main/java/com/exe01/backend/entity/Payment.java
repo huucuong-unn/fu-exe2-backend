@@ -21,7 +21,8 @@ public class Payment extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    private Double total;
+    private  Long refId;
+    private int total;
     private String tierName;
     private String method;
     private String status;

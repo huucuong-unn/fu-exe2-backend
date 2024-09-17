@@ -28,6 +28,12 @@ public class ConstStatus {
     public static class  TransactionStatus {
         public static final String SUCCESS_STATUS = "SUCCESS";
         public static final String FAILED_STATUS = "FAILED";
+
+        public static final String PENDING_STATUS = "PENDING";
+
+        public static final String CANCEL_STATUS = "CANCELLED";
+
+        public static final String PAID_STATUS = "PAID";
     }
 
     public static class MentorProfileStatus {

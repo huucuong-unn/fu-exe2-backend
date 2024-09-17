@@ -13,4 +13,6 @@ public interface ISubscriptionService {
     SubscriptionResponse update(UUID id, SubscriptionRequest request) throws BaseException;
 
     Subscription findById(UUID id) throws BaseException;
+
+    Subscription findByPlanType(String planType) throws BaseException;
 }

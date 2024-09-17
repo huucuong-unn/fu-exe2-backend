@@ -57,4 +57,21 @@ public class PaymentService implements IPaymentService {
 
         }
     }
+
+    @Override
+    public void UpdateRefId(UUID paymentId, Long refId) throws BaseException {
+        Payment payment = findById(paymentId);
+        payment.setRefId(refId);
+        paymentRepository.save(payment);
+    }
+
+    @Override
+    public Payment findByRefId(Long refId) throws BaseException {
+        Optional<Payment> payment = paymentRepository.findByRefId(refId);
+        if(payment.isPresent()){
+            return payment.get();
+        }else{
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Transaction.TRANSACTION_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }

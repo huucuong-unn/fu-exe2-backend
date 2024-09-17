@@ -59,4 +59,23 @@ public class SubscriptionService implements ISubscriptionService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
+
+    @Override
+    public Subscription findByPlanType(String planType) throws BaseException {
+        try {
+            logger.info("Find subscription by plan type");
+            Optional<Subscription> subscriptionByPlanType = subscriptionRepository.findByPlanType(planType);
+            boolean isExist = subscriptionByPlanType.isPresent();
+            if (!isExist) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Subscription.SUBSCRIPTION_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            return subscriptionByPlanType.get();
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }

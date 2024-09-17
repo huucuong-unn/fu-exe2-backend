@@ -218,6 +218,7 @@ public class UserService implements IUserService {
             if (subcriptionId != null) {
                 Subscription subscription = subscriptionService.findById(subcriptionId);
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() + subscription.getReviewCVTime());
+                userById.setSubscription(subscription);
             } else {
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
             }

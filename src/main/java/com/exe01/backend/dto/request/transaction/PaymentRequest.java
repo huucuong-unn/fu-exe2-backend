@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 public class PaymentRequest {
     private UUID userId;
-    private Double total;
+    private int total;
     private UUID tierId;
     private String method;
     private  String status = ConstStatus.PENDING;

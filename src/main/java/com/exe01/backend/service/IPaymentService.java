@@ -11,4 +11,8 @@ public interface IPaymentService {
     void changeStatus(String status, UUID paymentId) throws BaseException;
 
     Payment findById(UUID id) throws BaseException;
+
+    void UpdateRefId(UUID paymentId, Long refId) throws BaseException;
+
+    Payment findByRefId(Long refId) throws BaseException;
 }
