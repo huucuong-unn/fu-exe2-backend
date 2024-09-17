@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import vn.payos.PayOS;
 
 
 import java.util.Properties;
@@ -17,7 +18,12 @@ public class AppConfig {
     private String sender;
      @Value("${spring.mail.password}")
     private String password;
-
+    @Value("${PAYOS_CLIENT_ID}")
+    private String clientId;
+    @Value("${PAYOS_API_KEY}")
+    private String apiKey;
+    @Value("${PAYOS_CHECKSUM_KEY}")
+    private String checksumKey;
 
 
     @Bean
@@ -36,6 +42,11 @@ public class AppConfig {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+
+    @Bean
+    public PayOS payOS() {
+        return new PayOS(clientId, apiKey, checksumKey);
     }
 
     @Bean

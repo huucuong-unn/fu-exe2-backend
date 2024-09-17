@@ -65,7 +65,9 @@ public class CozeService implements ICozeService {
                 }
             } while (messages.size() < 2);        // Parse the feedback data
             userService.updateReviewCVTimes(userId, null);
-            return parseFeedbackData(messages.get(0).getContent());
+            CozeFeedbackResponse feedbackResponse =  parseFeedbackData(messages.get(0).getContent());
+            feedbackResponse.setUserId(userId);
+            return feedbackResponse;
         } catch (Exception e) {
             throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");
         }
