@@ -78,4 +78,24 @@ public class SubscriptionService implements ISubscriptionService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
         }
     }
+
+    @Override
+    public SubscriptionResponse findByUserId(UUID id) throws BaseException {
+        try {
+            logger.info("Find subscription by user id");
+            Optional<Subscription> subscriptionByUserId = subscriptionRepository.findByUserId(id);
+            boolean isExist = subscriptionByUserId.isPresent();
+            if (!isExist) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Subscription.SUBSCRIPTION_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            return SubscriptionConverter.fromEntityToSubscriptionResponse(subscriptionByUserId.get());
+
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
 }
