@@ -3,6 +3,7 @@ package com.exe01.backend.controller;
 import com.exe01.backend.constant.ConstAPI;
 import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
 import com.exe01.backend.dto.request.coze.CozeReviewCVRequest;
+import com.exe01.backend.dto.response.coze.CozeCreateCoverLetterResponse;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
 import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
 import com.exe01.backend.exception.BaseException;
@@ -32,7 +33,7 @@ public class CozeController {
     }
 
     @PostMapping(value = ConstAPI.CozeAPI.CREATE_COVER_LETTER)
-    public List<String> createChat(@RequestBody CozeCreateCoverLetterRequest request) throws BaseException {
+    public CozeCreateCoverLetterResponse createCoverLetter(@RequestBody CozeCreateCoverLetterRequest request) throws BaseException {
         return cozeService.CreateCoverLeter(request);
     }
 

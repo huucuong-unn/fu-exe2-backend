@@ -3,10 +3,7 @@ package com.exe01.backend.service.impl;
 import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.dto.request.coze.CozeCreateChatRequest;
 import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
-import com.exe01.backend.dto.response.coze.CozeCreateChatResponse;
-import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
-import com.exe01.backend.dto.response.coze.CozeMessageListResponse;
-import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
+import com.exe01.backend.dto.response.coze.*;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.openfeign.CozeClient;
@@ -84,9 +81,12 @@ public class CozeService implements ICozeService {
     }
 
     @Override
-    public List<String> CreateCoverLeter(CozeCreateCoverLetterRequest request) throws BaseException {
+    public CozeCreateCoverLetterResponse CreateCoverLeter(CozeCreateCoverLetterRequest request) throws BaseException {
         List<String> result = new ArrayList<>();
+        CozeCreateCoverLetterResponse response = new CozeCreateCoverLetterResponse();
         try {
+            //find user
+            userService.findById(request.getUserId());
             // Define the authorization token
             // Create a chat with the uploaded file
             CozeCreateChatRequest chatRequest = new CozeCreateChatRequest();
@@ -122,8 +122,9 @@ public class CozeService implements ICozeService {
 
 
             }
-
-            return result;
+            response.setData(result);
+            response.setUserId(request.getUserId());
+            return  response;
         } catch (Exception e) {
             throw new BaseException(500, "Failed to create cover letter", "ERROR");
         }
