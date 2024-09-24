@@ -1,11 +1,13 @@
 package com.exe01.backend.service.impl;
 
+import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.dto.request.coze.CozeCreateChatRequest;
 import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
 import com.exe01.backend.dto.response.coze.CozeCreateChatResponse;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
 import com.exe01.backend.dto.response.coze.CozeMessageListResponse;
 import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
+import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.openfeign.CozeClient;
 import com.exe01.backend.service.ICozeService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +48,12 @@ public class CozeService implements ICozeService {
     @Override
     public CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException {
         try {
+            boolean isUserSubscriptionAvailable = userService.isUserSubscriptionActive(userId, new Date());
+
+            if (!isUserSubscriptionAvailable) {
+                throw new BaseException(200, ConstError.Coze.NO_LONGER_VALID, ErrorCode.ERROR_406.getMessage());
+            }
+
             //check remain review cv
             userService.checkRemainReviewCV(userId);
             // Define the authorization token

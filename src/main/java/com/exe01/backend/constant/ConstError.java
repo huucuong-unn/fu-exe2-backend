@@ -4,6 +4,7 @@ public class ConstError {
 
     public static class Coze {
         public static final String OUT_OF_TIMES = "Don't have enough times to use this feature";
+        public static final String NO_LONGER_VALID = "Subscription no longer valid";
     }
 
 

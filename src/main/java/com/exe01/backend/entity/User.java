@@ -28,5 +28,7 @@ public class User extends BaseEntity{
     private String password;
     private String role;
     private String status;
+    private Date startDateSubscription;
+    private Date expiryDateSubscription;
     private int remainReviewCVTimes=0;
 }

@@ -26,6 +26,8 @@ public class ConstAPI {
 
     public static class SubscriptionAPI {
         public static final String CREATE_SUBSCRIPTION = "api/v1/subscription/create";
+
+        public static final String GET_SUBSCRIPTION_BY_USER_ID = "api/v1/subscription/user/";
     }
 
     public static class UniStudentAPI {

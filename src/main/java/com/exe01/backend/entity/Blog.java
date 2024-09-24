@@ -16,9 +16,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "blog")
 public class Blog extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "business_id", referencedColumnName = "id")
-    private Business business;
 
     private String picture;
 
