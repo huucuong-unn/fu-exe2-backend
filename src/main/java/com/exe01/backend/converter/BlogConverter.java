@@ -8,7 +8,6 @@ public class BlogConverter {
     public static BlogResponse fromEntityToBlogResponse(Blog blog) {
         BlogResponse blogResponse = new BlogResponse();
         blogResponse.setId(blog.getId());
-        blogResponse.setBusinessId(blog.getBusiness().getId());
         blogResponse.setTitleName(blog.getTitleName());
         blogResponse.setPicture(blog.getPicture());
         blogResponse.setContent(blog.getContent());
