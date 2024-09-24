@@ -37,9 +37,7 @@ public class BlogService implements IBlogService {
     public BlogResponse create(BlogRequest request) throws BaseException {
         try {
             logger.info("Create blog");
-            Business businessById = businessService.findById(request.getBusinessId());
             Blog blog = BlogConverter.fromRequestToEntity(request);
-            blog.setBusiness(businessById);
             blog.setStatus(ConstStatus.ACTIVE_STATUS);
             Blog newBlog = blogRepository.save(blog);
 

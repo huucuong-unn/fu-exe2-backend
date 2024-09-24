@@ -12,8 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlogRequest {
-    private UUID businessId;
-
     private String picture;
 
     private String titleName;
