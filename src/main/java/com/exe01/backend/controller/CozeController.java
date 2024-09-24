@@ -1,6 +1,7 @@
 package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
+import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
 import com.exe01.backend.dto.request.coze.CozeReviewCVRequest;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
 import com.exe01.backend.dto.response.coze.CozeUploadFileResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,6 +29,11 @@ public class CozeController {
         // Assuming you have a service named `cozeService` and a method `uploadFile`
        return cozeService.uploadFile(request.getFile(), request.getUserId());
         // Handle response from the service
+    }
+
+    @PostMapping(value = ConstAPI.CozeAPI.CREATE_COVER_LETTER)
+    public List<String> createChat(@RequestBody CozeCreateCoverLetterRequest request) throws BaseException {
+        return cozeService.CreateCoverLeter(request);
     }
 
 

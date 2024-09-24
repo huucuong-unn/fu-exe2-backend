@@ -1,6 +1,7 @@
 package com.exe01.backend.service.impl;
 
 import com.exe01.backend.dto.request.coze.CozeCreateChatRequest;
+import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
 import com.exe01.backend.dto.response.coze.CozeCreateChatResponse;
 import com.exe01.backend.dto.response.coze.CozeFeedbackResponse;
 import com.exe01.backend.dto.response.coze.CozeMessageListResponse;
@@ -70,6 +71,52 @@ public class CozeService implements ICozeService {
             return feedbackResponse;
         } catch (Exception e) {
             throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");
+        }
+    }
+
+    @Override
+    public List<String> CreateCoverLeter(CozeCreateCoverLetterRequest request) throws BaseException {
+        List<String> result = new ArrayList<>();
+        try {
+            // Define the authorization token
+            // Create a chat with the uploaded file
+            CozeCreateChatRequest chatRequest = new CozeCreateChatRequest();
+            CozeCreateChatRequest.AdditionalMessage additionalMessage = new CozeCreateChatRequest.AdditionalMessage(request);
+            chatRequest.setAdditionalMessages(List.of(additionalMessage));
+            CozeCreateChatResponse chatResponse = cozeClient.createChat(authorizationToken, chatRequest);
+            //get message list
+            List<CozeMessageListResponse.ChatData> messages;
+            do {
+                CozeMessageListResponse messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+                messages = messageListResponse.getData();
+                if (messages.size() < 2) {
+                    Thread.sleep(1000); // Sleep for 1 second before retrying
+                } else {
+                    Thread.sleep(5000); // Sleep for 10 second before retrying
+                    messageListResponse = cozeClient.getMessageList(authorizationToken, chatResponse.getData().getConversationId());
+                    messages = messageListResponse.getData();
+                }
+            } while (messages.size() < 2);        // Parse the feedback data
+            String[] lines = (messages.get(0).getContent()).replace("*","").split("\n");
+            for (int i = 0; i < lines.length; i++) {
+                // Lưu các phần cần thiết vào danh sách
+                if(i==0){
+                    continue;
+                }
+                if ( (lines[i].contains("Date and contact information") || lines[i].contains("Opening paragraph") ||
+                        lines[i].contains("Middle paragraph(s)") || lines[i].contains("Closing paragraph") || lines[i].contains("Complimentary close and signature") )
+                        || lines[i].equals("") ){
+                 continue;
+                }else{
+                    result.add(lines[i]);
+                }
+
+
+            }
+
+            return result;
+        } catch (Exception e) {
+            throw new BaseException(500, "Failed to create cover letter", "ERROR");
         }
     }
 
@@ -157,4 +204,3 @@ public class CozeService implements ICozeService {
     }
 
 }
-

@@ -47,6 +47,8 @@ public class ConstAPI {
     public static class CozeAPI {
         public static final String CREATE_CHAT = "api/v1/coze/chat";
         public static final String UPLOAD_FILE = "api/v1/coze/file";
+
+        public static final String CREATE_COVER_LETTER = "api/v1/coze/cover-letter";
     }
 
     public static class RoleAPI {

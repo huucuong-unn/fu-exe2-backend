@@ -183,7 +183,7 @@ public class UserService implements IUserService {
                     request.getEmail(),
                     request.getRole()
             );
-            if (userByEmailAndPassword == null) {
+            if (!userByEmailAndPassword.isPresent()) {
                 throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.USER_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
             }
             UserResponse userResponse = UserConverter.toUserResponse(userByEmailAndPassword.get());
