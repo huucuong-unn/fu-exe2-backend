@@ -9,5 +9,6 @@ public class CozeCreateCoverLetterRequest {
     private String phone;
     private String company;
     private String language;
+    private String experience;
     private String position;
 }
