@@ -7,6 +7,7 @@ import com.exe01.backend.entity.User;
 import com.exe01.backend.exception.BaseException;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.Date;
 import java.util.UUID;
 
 public interface IUserService {
@@ -28,4 +29,6 @@ public interface IUserService {
     Boolean changeStatus(UUID id, String status, String message) throws BaseException;
 
     User findByEmail(String email);
+
+    boolean isUserSubscriptionActive(UUID userId, Date currentDate);
 }

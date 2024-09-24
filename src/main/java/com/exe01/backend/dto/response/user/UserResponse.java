@@ -30,5 +30,8 @@ public class UserResponse {
 
     private int remainReviewCVTimes;
 
+    private Date startDateSubscription;
+
+    private Date expiryDateSubscription;
 
 }
