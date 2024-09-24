@@ -27,6 +27,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -219,6 +221,14 @@ public class UserService implements IUserService {
                 Subscription subscription = subscriptionService.findById(subcriptionId);
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() + subscription.getReviewCVTime());
                 userById.setSubscription(subscription);
+                Date currentDate = new Date();
+                userById.setStartDateSubscription(currentDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(currentDate);
+                calendar.add(Calendar.DAY_OF_MONTH, 30);
+
+                Date expiryDate = calendar.getTime();
+                userById.setExpiryDateSubscription(expiryDate);
             } else {
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
             }
@@ -261,5 +271,11 @@ public class UserService implements IUserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public boolean isUserSubscriptionActive(UUID userId, Date currentDate) {
+        Optional<User> user = userRepository.checkUserSubscription(userId, currentDate);
+        return user.isPresent();
     }
 }
