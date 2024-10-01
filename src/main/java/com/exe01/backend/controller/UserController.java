@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
@@ -44,5 +45,12 @@ public class UserController {
     public Boolean changeStatus(@RequestBody UserRequest userRequest) throws BaseException {
         log.info("Change status by Id");
         return userService.changeStatus(userRequest.getId(), userRequest.getStatus(), userRequest.getMessage());
+    }
+
+    @GetMapping(value = ConstAPI.UserAPI.GET_USERS)
+    public List<UserResponse> getUsers() throws BaseException {
+        log.info("Get all users");
+        return userService.getUsers();
+
     }
 }

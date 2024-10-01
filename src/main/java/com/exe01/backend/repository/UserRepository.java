@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(value = "SELECT * FROM user u WHERE u.id = :userId AND :currentDate BETWEEN u.start_date_subscription AND u.expiry_date_subscription", nativeQuery = true)
     Optional<User> checkUserSubscription(@Param("userId") UUID userId, @Param("currentDate") Date currentDate);
+
+    List<User> findAll();
 }

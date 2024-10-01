@@ -27,10 +27,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements IUserService {
@@ -277,5 +274,25 @@ public class UserService implements IUserService {
     public boolean isUserSubscriptionActive(UUID userId, Date currentDate) {
         Optional<User> user = userRepository.checkUserSubscription(userId, currentDate);
         return user.isPresent();
+    }
+
+    @Override
+    public List<UserResponse> getUsers() throws BaseException {
+        try {
+            logger.info("Find all users ");
+            List<User> users = userRepository.findAll();
+            List<UserResponse> userResponses = new ArrayList<>();
+            for (User u: users) {
+                UserResponse userResponse = UserConverter.toUserResponse(u);
+                userResponses.add(userResponse);
+            }
+
+            return userResponses;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
     }
 }

@@ -7,6 +7,7 @@ public class ConstAPI {
         public static final String LOGIN = "api/v1/user/login";
         public static final String LOGIN_GOOGLE = "api/v1/user/login-google";
         public static final String CHANGE_STATUS = "api/v1/user/status";
+        public static final String GET_USERS = "api/v1/user";
     }
 
     public static class InternshipProgram {
