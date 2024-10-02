@@ -28,7 +28,7 @@ public class CozeService implements ICozeService {
 
     @Autowired
     IUserService userService;
-    String authorizationToken = "Bearer pat_ruWxZd3Z4y2l6Qp8iFbydh7GtMxG6Zm1njHvY7OTxkMymNFHJL5l5O90ZUW9Frq3";
+    String authorizationToken = "Bearer pat_xV7buJDamtEZutBEYt0IWIYxynsGja7M266UzP2j6Bp56loxmOEVDhUGM5M8kpQy";
 
 
     @Override
