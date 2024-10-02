@@ -22,7 +22,7 @@ public interface IUserService {
     UserResponse loginWithGoogle(LoginRequest request) throws BaseException;
 
     @Async
-    void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException;
+    void updateReviewCVTimes(UUID id, UUID subcriptionId, String type) throws BaseException;
 
     void checkRemainReviewCV(UUID id) throws BaseException;
 

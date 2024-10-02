@@ -18,4 +18,8 @@ public interface ICozeService {
     CozeFeedbackResponse uploadFile(MultipartFile file, UUID userId) throws BaseException;
 
     CozeCreateCoverLetterResponse CreateCoverLeter(CozeCreateCoverLetterRequest request) throws BaseException;
+
+
+
+
  }

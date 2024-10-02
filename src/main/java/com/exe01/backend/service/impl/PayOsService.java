@@ -168,7 +168,7 @@ public class PayOsService implements IPayOsService {
                 Payment payment = paymentService.findByRefId(orderId);
                 paymentService.changeStatus(ConstStatus.TransactionStatus.PAID_STATUS, payment.getId());
                 Subscription subscription = subscriptionService.findByPlanType(payment.getTierName());
-                userService.updateReviewCVTimes(payment.getUser().getId(), subscription.getId());
+                userService.updateReviewCVTimes(payment.getUser().getId(), subscription.getId(),null);
                 return new RedirectView(frontEndHost);
             } else {
                 Payment payment = paymentService.findByRefId(orderId);

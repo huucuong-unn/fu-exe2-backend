@@ -119,7 +119,7 @@ private String frontEndHost = "a";
             // Trạng thái thành công
             UUID subcriptionId = UUID.fromString(extractValue(txnRef, 1));
             UUID accountId = UUID.fromString(extractValue(txnRef, 2));
-            userService.updateReviewCVTimes(accountId, subcriptionId);
+            userService.updateReviewCVTimes(accountId, subcriptionId,null);
             paymentService.changeStatus(ConstStatus.TransactionStatus.SUCCESS_STATUS ,paymentId);
             return new RedirectView(frontEndHost+ "/payment/success");
         } else {

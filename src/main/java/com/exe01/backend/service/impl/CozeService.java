@@ -1,5 +1,6 @@
 package com.exe01.backend.service.impl;
 
+import com.exe01.backend.constant.Const;
 import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.dto.request.coze.CozeCreateChatRequest;
 import com.exe01.backend.dto.request.coze.CozeCreateCoverLetterRequest;
@@ -71,7 +72,7 @@ public class CozeService implements ICozeService {
                     messages = messageListResponse.getData();
                 }
             } while (messages.size() < 2);        // Parse the feedback data
-            userService.updateReviewCVTimes(userId, null);
+            userService.updateReviewCVTimes(userId, null,Const.CV);
             CozeFeedbackResponse feedbackResponse =  parseFeedbackData(messages.get(0).getContent());
             feedbackResponse.setUserId(userId);
             return feedbackResponse;
@@ -85,8 +86,15 @@ public class CozeService implements ICozeService {
         List<String> result = new ArrayList<>();
         CozeCreateCoverLetterResponse response = new CozeCreateCoverLetterResponse();
         try {
+            boolean isUserSubscriptionAvailable = userService.isUserSubscriptionActive(request.getUserId(), new Date());
+
+            if (!isUserSubscriptionAvailable) {
+                throw new BaseException(200, ConstError.Coze.NO_LONGER_VALID, ErrorCode.ERROR_406.getMessage());
+            }
+
+            //check remain review cv
+            userService.checkRemainReviewCV(request.getUserId());
             //find user
-            userService.findById(request.getUserId());
             // Define the authorization token
             // Create a chat with the uploaded file
             CozeCreateChatRequest chatRequest = new CozeCreateChatRequest();
@@ -122,12 +130,34 @@ public class CozeService implements ICozeService {
 
 
             }
+            userService.updateReviewCVTimes(request.getUserId(), null, Const.COVER_LETTER);
             response.setData(result);
             response.setUserId(request.getUserId());
             return  response;
         } catch (Exception e) {
             throw new BaseException(500, "Failed to create cover letter", "ERROR");
         }
+    }
+    public static List<CozeCreateInterviewQuestionResponse.InterviewQuestion> parseQuestions(String input) {
+        List<CozeCreateInterviewQuestionResponse.InterviewQuestion> questionsList = new ArrayList<>();
+
+        // Split the input by **Q:** to get the individual question blocks
+        String[] questionBlocks = input.split("\\*\\*Q:\\*\\*");
+
+        for (String block : questionBlocks) {
+            // Ignore the first block as it will be empty
+            if (block.trim().isEmpty()) continue;
+
+            // Split each block by **A:** to separate question and answer
+            String[] parts = block.split("\\*\\*A:\\*\\*");
+            if (parts.length == 2) {
+                String question = parts[0].trim();
+                String answer = parts[1].trim();
+                questionsList.add(new CozeCreateInterviewQuestionResponse.InterviewQuestion(question, answer));
+            }
+        }
+
+        return questionsList;
     }
 
     public CozeFeedbackResponse parseFeedbackData(String rawData) {

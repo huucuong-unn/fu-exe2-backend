@@ -1,5 +1,6 @@
 package com.exe01.backend.service.impl;
 
+import com.exe01.backend.constant.Const;
 import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.constant.ConstStatus;
 import com.exe01.backend.converter.UserConverter;
@@ -165,9 +166,11 @@ public class UserService implements IUserService {
             if (userByEmailAndPassword == null) {
                 throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.USER_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
             }
-            UniStudent uniStudent = uniStudentService.findByUserId(userByEmailAndPassword.get().getId());
             UserResponse userResponse = UserConverter.toUserResponse(userByEmailAndPassword.get());
-            userResponse.setPictureUrl(uniStudent.getProfilePicture());
+            if(request.getUniStudentRequest() !=null) {
+                UniStudent uniStudent = uniStudentService.findByUserId(userByEmailAndPassword.get().getId());
+                userResponse.setPictureUrl(uniStudent.getProfilePicture());
+            }
             return userResponse;
         } catch (Exception baseException) {
             if (baseException instanceof BaseException) {
@@ -213,7 +216,7 @@ public class UserService implements IUserService {
 
     @Override
     @Async
-    public void updateReviewCVTimes(UUID id, UUID subcriptionId) throws BaseException {
+    public void updateReviewCVTimes(UUID id, UUID subcriptionId,String type) throws BaseException {
         try {
             logger.info("Update review CV times");
             User userById = findById(id);
@@ -230,7 +233,14 @@ public class UserService implements IUserService {
                 Date expiryDate = calendar.getTime();
                 userById.setExpiryDateSubscription(expiryDate);
             } else {
-                userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
+                switch (type){
+                    case Const.COVER_LETTER:
+                        userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 3);
+                        break;
+                    case Const.CV:
+                        userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
+                        break;
+                }
             }
             userRepository.save(userById);
         } catch (Exception baseException) {
