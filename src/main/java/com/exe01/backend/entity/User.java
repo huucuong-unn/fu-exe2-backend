@@ -31,4 +31,5 @@ public class User extends BaseEntity{
     private Date startDateSubscription;
     private Date expiryDateSubscription;
     private int remainReviewCVTimes=0;
+    private int remainInterviewTimes=0;
 }

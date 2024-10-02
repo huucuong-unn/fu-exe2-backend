@@ -25,6 +25,7 @@ public class Subscription extends BaseEntity{
 
     private Double price;
     private int reviewCVTime;
+    private int interviewTime;
     private String planType;
     private Date startDate;
     private Date endDate;

@@ -53,7 +53,7 @@ public class CozeService implements ICozeService {
             }
 
             //check remain review cv
-            userService.checkRemainReviewCV(userId);
+            userService.checkRemainReviewCV(userId, Const.CV);
             // Define the authorization token
             // Upload the file
             CozeUploadFileResponse fileResponse = cozeClient.uploadFile(authorizationToken, file);
@@ -93,7 +93,7 @@ public class CozeService implements ICozeService {
             }
 
             //check remain review cv
-            userService.checkRemainReviewCV(request.getUserId());
+            userService.checkRemainReviewCV(request.getUserId(),Const.COVER_LETTER);
             //find user
             // Define the authorization token
             // Create a chat with the uploaded file
@@ -135,6 +135,9 @@ public class CozeService implements ICozeService {
             response.setUserId(request.getUserId());
             return  response;
         } catch (Exception e) {
+            if (BaseException.class.isInstance(e)) {
+                throw (BaseException) e;
+            }
             throw new BaseException(500, "Failed to create cover letter", "ERROR");
         }
     }

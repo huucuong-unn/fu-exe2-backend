@@ -164,7 +164,7 @@ public class UserService implements IUserService {
                 throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.USER_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
             }
             UserResponse userResponse = UserConverter.toUserResponse(userByEmailAndPassword.get());
-            if(request.getUniStudentRequest() !=null) {
+            if(request.getRole().equals("student")) {
                 UniStudent uniStudent = uniStudentService.findByUserId(userByEmailAndPassword.get().getId());
                 userResponse.setPictureUrl(uniStudent.getProfilePicture());
             }
@@ -220,6 +220,7 @@ public class UserService implements IUserService {
             if (subcriptionId != null) {
                 Subscription subscription = subscriptionService.findById(subcriptionId);
                 userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() + subscription.getReviewCVTime());
+                userById.setRemainInterviewTimes(userById.getRemainInterviewTimes() + subscription.getInterviewTime());
                 userById.setSubscription(subscription);
                 Date currentDate = new Date();
                 userById.setStartDateSubscription(currentDate);
@@ -232,7 +233,7 @@ public class UserService implements IUserService {
             } else {
                 switch (type){
                     case Const.COVER_LETTER:
-                        userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 3);
+                        userById.setRemainInterviewTimes(userById.getRemainInterviewTimes() - 1);
                         break;
                     case Const.CV:
                         userById.setRemainReviewCVTimes(userById.getRemainReviewCVTimes() - 1);
@@ -246,10 +247,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void checkRemainReviewCV(UUID id) throws BaseException {
+    public void checkRemainReviewCV(UUID id,String type) throws BaseException {
         User userById = findById(id);
-        if (userById.getRemainReviewCVTimes() <= 0) {
-            throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
+        switch (type){
+            case Const.COVER_LETTER:
+                if (userById.getRemainInterviewTimes() <=0) {
+                    throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
+                }
+                break;
+            case Const.CV:
+                if (userById.getRemainReviewCVTimes() <= 0) {
+                    throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Coze.OUT_OF_TIMES, ErrorCode.ERROR_500.getMessage());
+                }
+                break;
         }
     }
 

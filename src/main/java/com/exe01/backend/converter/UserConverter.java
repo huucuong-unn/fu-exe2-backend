@@ -12,6 +12,9 @@ public class UserConverter {
         userResponse.setEmail(user.getEmail());
         userResponse.setDob(user.getDob());
         userResponse.setRemainReviewCVTimes(user.getRemainReviewCVTimes());
+        userResponse.setRemainInterviewTimes(user.getRemainInterviewTimes());
+        userResponse.setStartDateSubscription(user.getStartDateSubscription());
+        userResponse.setExpiryDateSubscription(user.getExpiryDateSubscription());
         userResponse.setRole(user.getRole());
         userResponse.setStatus(user.getStatus());
 

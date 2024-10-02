@@ -29,6 +29,7 @@ public class UserResponse {
     private String pictureUrl;
 
     private int remainReviewCVTimes;
+    private int remainInterviewTimes;
 
     private Date startDateSubscription;
 
