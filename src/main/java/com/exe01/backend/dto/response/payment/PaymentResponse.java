@@ -17,6 +17,7 @@ public class PaymentResponse {
 
     private UUID id;
     private UserResponse user;
+    private String email;
     private Long refId;
     private int total;
     private String tierName;

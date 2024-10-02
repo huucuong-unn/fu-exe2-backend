@@ -95,6 +95,7 @@ public class PaymentService implements IPaymentService {
                 UserResponse userResponse = UserConverter.toUserResponse(u.getUser());
                 PaymentResponse paymentResponse = PaymentConverter.toPaymentResponse(u);
                 paymentResponse.setUser(userResponse);
+                paymentResponse.setEmail(u.getUser().getEmail());
                 paymentResponses.add(paymentResponse);
             }
 
