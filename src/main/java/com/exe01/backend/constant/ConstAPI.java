@@ -70,4 +70,9 @@ public class ConstAPI {
         public static final String NOTIFITION_TOKEN = "api/v1/notifcation-token";
     }
 
+    public static class PaymentAPI
+    {
+        public static final String GET_PAYMENT = "api/v1/payment";
+    }
+
 }
