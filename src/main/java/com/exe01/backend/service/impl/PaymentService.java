@@ -4,6 +4,7 @@ import com.exe01.backend.constant.ConstError;
 import com.exe01.backend.converter.PaymentConverter;
 import com.exe01.backend.converter.UserConverter;
 import com.exe01.backend.dto.request.transaction.PaymentRequest;
+import com.exe01.backend.dto.response.payment.PaymentDashBoardResponse;
 import com.exe01.backend.dto.response.payment.PaymentResponse;
 import com.exe01.backend.dto.response.user.UserResponse;
 import com.exe01.backend.entity.Payment;
@@ -12,6 +13,7 @@ import com.exe01.backend.entity.User;
 import com.exe01.backend.enums.ErrorCode;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.repository.PaymentRepository;
+import com.exe01.backend.repository.customEntityResponse.PaymentCustomResponse;
 import com.exe01.backend.service.IPaymentService;
 import com.exe01.backend.service.ISubscriptionService;
 import com.exe01.backend.service.IUserService;
@@ -107,5 +109,26 @@ public class PaymentService implements IPaymentService {
             throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Transaction.TRANSACTION_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
         }
 
+    }
+
+    @Override
+    public PaymentDashBoardResponse getPaymentDashBoard() throws BaseException {
+        try {
+            logger.info("Get all payments");
+            List<PaymentCustomResponse> payments = paymentRepository.findSuccessfulPaymentsByTierName();
+            PaymentDashBoardResponse paymentDashBoardResponse = new PaymentDashBoardResponse();
+            paymentDashBoardResponse.setPaymentDashBoard(payments);
+            Double total = 0.0;
+            for (PaymentCustomResponse p: payments) {
+                total += p.getTotal();
+            }
+            paymentDashBoardResponse.setTotalAllPayment(total);
+            return paymentDashBoardResponse;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.Transaction.TRANSACTION_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+        }
     }
 }

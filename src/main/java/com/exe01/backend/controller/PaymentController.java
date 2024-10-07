@@ -1,6 +1,7 @@
 package com.exe01.backend.controller;
 
 import com.exe01.backend.constant.ConstAPI;
+import com.exe01.backend.dto.response.payment.PaymentDashBoardResponse;
 import com.exe01.backend.dto.response.payment.PaymentResponse;
 import com.exe01.backend.exception.BaseException;
 import com.exe01.backend.service.IPaymentService;
@@ -64,4 +65,9 @@ public class PaymentController {
     log.info("Get all payments");
     return paymentService.getPayments();
   }
+  @GetMapping(ConstAPI.PaymentAPI.GET_PAYMENT_DASHBOARD)
+    public PaymentDashBoardResponse getPaymentDashBoard() throws BaseException{
+        log.info("Get payment dashboard");
+        return paymentService.getPaymentDashBoard();
+    }
 }

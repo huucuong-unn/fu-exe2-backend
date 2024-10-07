@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT * FROM user u WHERE u.id = :userId AND :currentDate BETWEEN u.start_date_subscription AND u.expiry_date_subscription", nativeQuery = true)
+    @Query("SELECT u FROM User u WHERE u.id = :userId AND  ((:currentDate BETWEEN u.startDateSubscription AND u.expiryDateSubscription) OR u.subscription.planType = 'Free Tee')")
     Optional<User> checkUserSubscription(@Param("userId") UUID userId, @Param("currentDate") Date currentDate);
 
     List<User> findAll();

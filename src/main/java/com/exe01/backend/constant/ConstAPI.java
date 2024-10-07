@@ -73,6 +73,7 @@ public class ConstAPI {
     public static class PaymentAPI
     {
         public static final String GET_PAYMENT = "api/v1/payment";
+        public static final String GET_PAYMENT_DASHBOARD = "api/v1/payment/dashboard";
     }
 
 }

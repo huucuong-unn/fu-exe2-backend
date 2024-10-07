@@ -77,6 +77,9 @@ public class CozeService implements ICozeService {
             feedbackResponse.setUserId(userId);
             return feedbackResponse;
         } catch (Exception e) {
+            if (BaseException.class.isInstance(e)) {
+                throw (BaseException) e;
+            }
             throw new BaseException(500, "Failed to upload file or fetch messages", "ERROR");
         }
     }

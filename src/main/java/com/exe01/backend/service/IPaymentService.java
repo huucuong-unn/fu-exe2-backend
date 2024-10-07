@@ -1,6 +1,7 @@
 package com.exe01.backend.service;
 
 import com.exe01.backend.dto.request.transaction.PaymentRequest;
+import com.exe01.backend.dto.response.payment.PaymentDashBoardResponse;
 import com.exe01.backend.dto.response.payment.PaymentResponse;
 import com.exe01.backend.entity.Payment;
 import com.exe01.backend.exception.BaseException;
@@ -20,4 +21,6 @@ public interface IPaymentService {
     Payment findByRefId(Long refId) throws BaseException;
 
     List<PaymentResponse> getPayments() throws BaseException;
+
+    PaymentDashBoardResponse getPaymentDashBoard() throws BaseException;
 }
