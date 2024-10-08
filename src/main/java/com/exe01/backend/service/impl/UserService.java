@@ -69,6 +69,7 @@ public class UserService implements IUserService {
             user.setStatus(ConstStatus.PENDING);
             user.setSubscription(subscription);
             user.setRemainReviewCVTimes(1);
+            user.setRemainInterviewTimes(1);
             User newUser = userRepository.save(user);
 
             // check role to create student or business
