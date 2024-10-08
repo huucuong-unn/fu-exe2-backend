@@ -22,6 +22,8 @@ public interface IUserService {
 
     UserResponse loginWithGoogle(LoginRequest request) throws BaseException;
 
+    UserResponse findByIdV2(UUID id) throws BaseException;
+
     @Async
     void updateReviewCVTimes(UUID id, UUID subcriptionId, String type) throws BaseException;
 

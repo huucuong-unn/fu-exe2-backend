@@ -213,6 +213,28 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserResponse findByIdV2(UUID id) throws BaseException {
+        try {
+            logger.info("Find user by id");
+            Optional<User> userById = userRepository.findById(id);
+            boolean isExist = userById.isPresent();
+            if (!isExist) {
+                throw new BaseException(ErrorCode.ERROR_500.getCode(), ConstError.User.USER_NOT_FOUND, ErrorCode.ERROR_500.getMessage());
+            }
+
+            UserResponse userResponse = UserConverter.toUserResponse(userById.get());
+                    UniStudent uniStudent = uniStudentService.findByUserId(userById.get().getId());
+                    userResponse.setPictureUrl(uniStudent.getProfilePicture());
+            return userResponse;
+        } catch (Exception baseException) {
+            if (baseException instanceof BaseException) {
+                throw baseException; // rethrow the original BaseException
+            }
+            throw new BaseException(ErrorCode.ERROR_500.getCode(), baseException.getMessage(), ErrorCode.ERROR_500.getMessage());
+        }
+    }
+
+    @Override
     @Async
     public void updateReviewCVTimes(UUID id, UUID subcriptionId,String type) throws BaseException {
         try {

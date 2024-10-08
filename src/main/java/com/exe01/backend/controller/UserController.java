@@ -53,4 +53,10 @@ public class UserController {
         return userService.getUsers();
 
     }
+
+    @GetMapping(value = ConstAPI.UserAPI.GET_USER_BY_ID + "{id}")
+    public UserResponse findById(@PathVariable UUID id) throws BaseException {
+        log.info("Find user by id: {}", id);
+        return userService.findByIdV2(id);
+    }
 }
