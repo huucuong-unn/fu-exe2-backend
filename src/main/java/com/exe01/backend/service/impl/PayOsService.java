@@ -56,10 +56,10 @@ public class PayOsService implements IPayOsService {
         try {
             Subscription subscription = subscriptionService.findByPlanType(RequestBody.getProductName());
 
-            final String description = subscription.getPlanType()+".";
+            final String description = subscription.getPlanType() + ".";
             String returnUrl = backEndHost + "/api/v1/order/handle-order-status/";
             String cancelUrl = "";
-            final int price = Integer.parseInt(subscription.getPrice().toString().replace(".0",""));
+            final int price = Integer.parseInt(subscription.getPrice().toString().replace(".0", ""));
 
             //create order
             PaymentRequest paymentRequest = new PaymentRequest();
@@ -164,17 +164,19 @@ public class PayOsService implements IPayOsService {
         try {
             PaymentLinkData order = null;
             order = payOS.getPaymentLinkInformation(orderId);
-            if (order.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS)) {
-                Payment payment = paymentService.findByRefId(orderId);
+            Payment payment = paymentService.findByRefId(orderId);
+            if (order.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS) && payment.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS)) {
+                return new RedirectView(frontEndHost);
+            }
+            if (order.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS) && !payment.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS)) {
                 paymentService.changeStatus(ConstStatus.TransactionStatus.PAID_STATUS, payment.getId());
                 Subscription subscription = subscriptionService.findByPlanType(payment.getTierName());
-                userService.updateReviewCVTimes(payment.getUser().getId(), subscription.getId(),null);
-                return new RedirectView(frontEndHost);
+                userService.updateReviewCVTimes(payment.getUser().getId(), subscription.getId(), null);
             } else {
-                Payment payment = paymentService.findByRefId(orderId);
                 paymentService.changeStatus(ConstStatus.TransactionStatus.CANCEL_STATUS, payment.getId());
                 return new RedirectView(frontEndHost + "/payment/failed");
             }
+            return new RedirectView(frontEndHost);
         } catch (Exception e) {
             e.printStackTrace();
             return new RedirectView(frontEndHost + "/payment/failed");
