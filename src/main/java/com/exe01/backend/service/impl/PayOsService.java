@@ -166,7 +166,7 @@ public class PayOsService implements IPayOsService {
             order = payOS.getPaymentLinkInformation(orderId);
             Payment payment = paymentService.findByRefId(orderId);
             if (order.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS) && payment.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS)) {
-                return new RedirectView(frontEndHost);
+                return new RedirectView(frontEndHost+"/payment/success");
             }
             if (order.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS) && !payment.getStatus().equals(ConstStatus.TransactionStatus.PAID_STATUS)) {
                 paymentService.changeStatus(ConstStatus.TransactionStatus.PAID_STATUS, payment.getId());
@@ -176,7 +176,7 @@ public class PayOsService implements IPayOsService {
                 paymentService.changeStatus(ConstStatus.TransactionStatus.CANCEL_STATUS, payment.getId());
                 return new RedirectView(frontEndHost + "/payment/failed");
             }
-            return new RedirectView(frontEndHost);
+            return new RedirectView(frontEndHost+"/payment/success");
         } catch (Exception e) {
             e.printStackTrace();
             return new RedirectView(frontEndHost + "/payment/failed");
